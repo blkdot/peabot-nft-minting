@@ -115,7 +115,7 @@ body {
 	}
 }
 
-.discord {
+#discord {
 	margin-top: 70px;
 	p {
 		font-size: 1.25rem;
@@ -132,7 +132,7 @@ body {
 	}
 }
 
-.roadmap {
+#roadmap {
 	background-color: #192423;
 	padding-top: 56px;
 	.roadmap-step {
@@ -223,6 +223,15 @@ body {
 	padding-top: 70px;
 	padding-bottom: 70px;
 	background-color: #0c1615;
+	ul {
+		li {
+			padding: 0px 16px;
+			a {
+				text-decoration: none;
+				color: white;
+			}
+		}
+	}
 }
 
 .modal-dialog {

@@ -16,9 +16,20 @@ import {
 
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+
+// get our fontawesome imports
+import { fab, faDiscord, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import Web3 from 'web3';
 import {ADDRESS, ABI} from "./config.js";
+import { library } from '@fortawesome/fontawesome-svg-core';
 
+library.add(
+  fab,
+  faDiscord,
+  faTwitter
+)
 
 const Accordion = ({ title, children }) => {
   const [isOpen, setOpen] = React.useState(false);
@@ -252,7 +263,7 @@ function App() {
           </Row>
         </div>
         {/* Discord */}
-        <div className="discord">
+        <div id="discord">
           <Row>
             <Col lg={6} md={6} sm={12}>
               <div className="discord-title">
@@ -273,7 +284,7 @@ function App() {
         </div>
       </Container>
       {/* Roadmap */}
-      <div className="roadmap">
+      <div id="roadmap">
         <Container>
           <h2 className="roadmap-header text-center mb-3">ROADMAP</h2>
           <h5 className="roadmap-content mb-5">
@@ -432,53 +443,52 @@ function App() {
       <div id="faq">
         <Container>
           <h2 className="text-center">FREQUENTLY ASKED QUESTIONS</h2>
-          <Accordion title="Why is the sky blue?">
-            Sunlight reaches Earth's atmosphere and is scattered in all directions by
-            all the gases and particles in the air. Blue light is scattered more than
-            the other colors because it travels as shorter, smaller waves. This is why
-            we see a blue sky most of the time.
+          <Accordion title="How Much to Mint a G'EVOL?">
+            G'EVOLs will be listed at 0.1 ETH per mint
           </Accordion>
           <Accordion title="What's It Like Inside Jupiter?">
-            It's really hot inside Jupiter! No one knows exactly how hot, but
-            scientists think it could be about 43,000°F (24,000°C) near Jupiter's
-            center, or core.
+            888 G'EVOLS will be created and minted. 50 Mints will be reserved from the sale. These will be held for competitions and the team's memberships.
           </Accordion>
-          <Accordion title="What Is a Black Hole?">
-            A black hole is an area of such immense gravity that nothing -- not even
-            light -- can escape from it.
+          <Accordion title="Do I won the IP to the G'EVOLs I mint?">
+            No! Absolutely not! Just because apes did it doesn’t mean it applies to everything. This project is the life work of KidEight and all EVOLs IP and storyline stay in his complete control.
+            Tribute art of the EVOLs you own is fine, please don’t take the piss.
+            By purchasing an EVOL you are effectively a part of the EVOL story and timeline, buckle in.
+          </Accordion>
+          <Accordion title="I'm worried about all the attention I'll get with my new G'EVOL mint!">
+            Get Used to it
           </Accordion>
         </Container>
       </div>
       {/*Footer*/}
       <div  className="footer container-fluid text-center text-md-left">
         <Container>
-          <div className="row">
-            <div className="col-md-6 mt-md-0 mt-3">
-              <h5 className="text-uppercase">Footer Content</h5>
-              <p>Here you can use rows and columns to organize your footer content.</p>
+          <div className="d-flex justify-content-between">
+            <img src="/images/logo.svg" alt="" style={{width: "115px"}}/>
+            <ul className="d-flex list-unstyled">
+              <li><a href="#dicord">Discord</a></li>
+              <li><a href="#mint">Mint</a></li>
+              <li><a href="#roadmap">Roadmap</a></li>
+              <li><a href="#faq">Faq</a></li>
+            </ul>
+            <Button size="lg" onClick={handleShow}>MINT</Button>
+          </div>
+          <hr />
+          <div className="d-flex justify-content-between">
+            <div>
+              © Copyright 2021 G'Evols
             </div>
-
-            <hr className="clearfix w-100 d-md-none pb-0"/>
-
-            <div className="col-md-3 mb-md-0 mb-3">
-              <h5 className="text-uppercase">Links</h5>
-              <ul className="list-unstyled">
-                <li><a href="#!">Link 1</a></li>
-                <li><a href="#!">Link 2</a></li>
-                <li><a href="#!">Link 3</a></li>
-                <li><a href="#!">Link 4</a></li>
-              </ul>
-            </div>
-
-            <div className="col-md-3 mb-md-0 mb-3">
-              <h5 className="text-uppercase">Links</h5>
-              <ul className="list-unstyled">
-                <li><a href="#!">Link 1</a></li>
-                <li><a href="#!">Link 2</a></li>
-                <li><a href="#!">Link 3</a></li>
-                <li><a href="#!">Link 4</a></li>
-              </ul>
-            </div>
+            <ul class="d-flex list-unstyled">
+              <li>
+                <a href="https://t.co/q9DCKK06lL" target="_blank" title="Discord">
+                  <FontAwesomeIcon icon={["fab", "discord"]} />
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/gevolsNFT" target="_blank" title="Twitter">
+                  <FontAwesomeIcon icon={["fab", "twitter"]} />
+                </a>
+              </li>
+            </ul>
           </div>
         </Container>
       </div>
