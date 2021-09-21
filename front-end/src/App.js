@@ -106,11 +106,17 @@ function App() {
       .then(function (accounts) {
         window.web3.eth.net.getNetworkType()
         // checks if connected network is mainnet (change this to rinkeby if you wanna test on testnet)
-        .then((network) => {console.log(network);if(network !== "rinkeby"){ alert("You are on " + network+ " network. Change network to rinkeby or you won't be able to do anything here")} });  
-        let wallet = accounts[0]
-        setWalletAddress(wallet)
-        setSignedIn(true)
-        callContractData(wallet)
+        .then((network) => {
+          console.log(network);
+          if(network !== "rinkeby") { 
+            alert("You are on " + network+ " network. Change network to rinkeby or you won't be able to do anything here")
+          } else {
+            let wallet = accounts[0]
+            setWalletAddress(wallet)
+            setSignedIn(true)
+            callContractData(wallet)
+          }
+        });  
       })
       .catch(function (error) {
         // Handle error. Likely the user rejected the login
