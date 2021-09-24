@@ -25,6 +25,8 @@ import Web3 from 'web3';
 import {ADDRESS, ABI} from "./config.js";
 import { library } from '@fortawesome/fontawesome-svg-core';
 
+import Timer from './timer';
+
 library.add(
   fab,
   faDiscord,
@@ -66,6 +68,10 @@ function App() {
   const [totalSupply, setTotalSupply] = useState(0);
   const [nfPeabotPrice, setNFPeabotPrice] = useState(0);
   const [maxTokenNumber, setMaxTokenNumber] = useState(0);
+
+  // public sale date
+  // eslint-disable-next-line
+  const [publicSaleDate, setPublicSaleDate] = useState({name: 'Public Sale Date', date: 'September 30, 2021'});
   
   const toggle = () => setIsOpen(!isOpen);
 
@@ -251,8 +257,9 @@ function App() {
                 After centuries of equally good and bad behaviour he has found a home on the blockchain. 
                 G’EVOLs is a collection of 8888 disguises and forms that EVOL can take on any given day.
               </p>
-              <div className="banner-btn">
+              <div className="banner-btn d-flex">
                 <Button size="lg" onClick={handleShow}>MINT</Button>
+                <Timer eventName={publicSaleDate.name} eventDate={publicSaleDate.date} />
               </div>
               <h2>SPECS</h2>
               <p>
@@ -485,12 +492,12 @@ function App() {
             </div>
             <ul class="d-flex list-unstyled">
               <li>
-                <a href="https://t.co/q9DCKK06lL" target="_blank" title="Discord">
+                <a href="https://t.co/q9DCKK06lL" title="Discord">
                   <FontAwesomeIcon icon={["fab", "discord"]} />
                 </a>
               </li>
               <li>
-                <a href="https://twitter.com/gevolsNFT" target="_blank" title="Twitter">
+                <a href="https://twitter.com/gevolsNFT" title="Twitter">
                   <FontAwesomeIcon icon={["fab", "twitter"]} />
                 </a>
               </li>
