@@ -213,284 +213,330 @@ function App() {
             </NavbarBrand>
             <NavbarToggler onClick={toggle} />
             <Collapse isOpen={isOpen} navbar>
-              <Nav navbar>
-                <NavItem>
-                  <NavLink href="/">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="/#mint">MINT</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="#faq">FAQ</NavLink>
-                </NavItem>
-                <NavItem>
-                  {!signedIn ? <Button size="sm" onClick={connectMetamask}>CONNECT WALLET</Button>
-                  :
-                  <Button size="sm" onClick={disconnectMetamask}>DISCONNECT WALLET</Button>}
-                </NavItem>
+              <Nav navbar className = "d-flex justify-content-between">
+                <div className="d-flex align-items-center">
+                  <NavItem>
+                    <NavLink href="/#about">ABOUT</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href="/#community">COMMUNITY</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href="#specs">SPECS</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href="#roadmap">ROADMAP</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href="#team">TEAM</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href="#faq">FAQ</NavLink>
+                  </NavItem>
+                </div>
+                <div className="d-flex align-items-center">
+                  <NavItem className="discord">
+                    <NavLink href="#faq">
+                      <svg id="discord-seeklogo.com" xmlns="http://www.w3.org/2000/svg" width="24.502" height="27.133" viewBox="0 0 24.502 27.133">
+                        <path id="Path_2" data-name="Path 2" d="M21.632,0H2.87A2.833,2.833,0,0,0,0,2.795V21.137a2.833,2.833,0,0,0,2.87,2.795H18.748l-.742-2.51L19.8,23.036l1.694,1.519,3.01,2.578V2.795A2.833,2.833,0,0,0,21.632,0Zm-5.4,17.718s-.5-.583-.924-1.1A4.412,4.412,0,0,0,17.838,15a8.113,8.113,0,0,1-1.61.8,9.438,9.438,0,0,1-2.03.583,10.117,10.117,0,0,1-3.626-.014,12.042,12.042,0,0,1-2.058-.583,8.336,8.336,0,0,1-1.022-.461c-.042-.027-.084-.041-.126-.068a.193.193,0,0,1-.056-.041c-.252-.136-.392-.231-.392-.231a4.344,4.344,0,0,0,2.45,1.6c-.42.516-.938,1.126-.938,1.126a5.107,5.107,0,0,1-4.27-2.062A17.741,17.741,0,0,1,6.175,7.747a7.074,7.074,0,0,1,3.934-1.425l.14.163A9.542,9.542,0,0,0,6.567,8.262s.308-.163.826-.393a10.783,10.783,0,0,1,3.178-.855,1.421,1.421,0,0,1,.238-.027,12.223,12.223,0,0,1,2.828-.027,11.675,11.675,0,0,1,4.214,1.3,9.407,9.407,0,0,0-3.486-1.723l.2-.217A7.074,7.074,0,0,1,18.5,7.747a17.74,17.74,0,0,1,2.016,7.909A5.15,5.15,0,0,1,16.227,17.718ZM9.717,11.382a1.508,1.508,0,1,0,1.428,1.506,1.465,1.465,0,0,0-1.428-1.506m5.111,0a1.508,1.508,0,1,0,1.428,1.506,1.465,1.465,0,0,0-1.428-1.506" fill="#fff"/>
+                      </svg>
+                    </NavLink>
+                  </NavItem>
+                  <NavItem className="twitter">
+                    <NavLink href="#faq">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="26.657" height="21.663" viewBox="0 0 26.657 21.663">
+                        <path id="Path_3" data-name="Path 3" d="M165.657,85.3a10.937,10.937,0,0,1-3.141.861,5.487,5.487,0,0,0,2.4-3.026,10.944,10.944,0,0,1-3.473,1.327,5.474,5.474,0,0,0-9.319,4.988,15.526,15.526,0,0,1-11.272-5.714,5.475,5.475,0,0,0,1.692,7.3,5.447,5.447,0,0,1-2.477-.684c0,.023,0,.046,0,.069a5.472,5.472,0,0,0,4.387,5.363,5.482,5.482,0,0,1-2.47.094,5.474,5.474,0,0,0,5.109,3.8,10.972,10.972,0,0,1-6.792,2.341,11.094,11.094,0,0,1-1.3-.077,15.553,15.553,0,0,0,23.943-13.1q0-.356-.016-.708A11.112,11.112,0,0,0,165.657,85.3Z" transform="translate(-139 -82.733)" fill="#fff"/>
+                      </svg>
+                    </NavLink>
+                  </NavItem>
+                  <NavItem className="wallet-connect-btn">
+                    {!signedIn ? <Button size="sm" onClick={connectMetamask}>CONNECT WALLET</Button>
+                    :
+                    <Button size="sm" onClick={disconnectMetamask}>DISCONNECT WALLET</Button>}
+                  </NavItem>
+                </div>
               </Nav>
             </Collapse>
           </Container>
         </Navbar>
       </div>
+      {/* Banner */}
       <Container>
-        {/* Banner */}
-        <div className="banner">
-          <div className="banner-content">
-            <div className="d-flex justify-content-center">
-              <img src="/images/banner.png" alt="banner" style={{height: "400px"}}/>
-            </div>
-            <h1>PEABOT SUCCESSFULLY SOLD OUT!</h1>
+        <div className="banner d-flex">
+          <div>
+            <h2>Join the PeaBot Army</h2>
+            <p>A collection of 10,000 unique PeaBots, forever dreaming of living like humans.</p>
+            {
+              !signedIn ? <Button size="sm" onClick={connectMetamask}>CONNECT WALLET</Button>
+                :
+                <Button size="sm" onClick={disconnectMetamask}>DISCONNECT WALLET</Button> 
+            }
           </div>
-        </div>
-        {/* About */}
-        <div id="mint">
-          <Row>
-            <Col md={6} sm={12}>
-              <p>The Blockchain Favourite Anti-Hero in 10000 Different disguises and forms!</p>
-              <h2>WHO IS EVAL?</h2>
-              <p>
-                EVOL, a 2000 year old Cherub, has been cast down to earth after a disagreement with the management. 
-                At first too proud to try and get back home, now, unable to remember what he has to do to get there.
-              </p>
-              <p>
-                After centuries of equally good and bad behaviour he has found a home on the blockchain. 
-                G’EVOLs is a collection of 8888 disguises and forms that EVOL can take on any given day.
-              </p>
-              <div className="banner-btn d-flex">
-                <Button size="lg" onClick={handleShow}>MINT</Button>
-                <Timer eventName={publicSaleDate.name} eventDate={publicSaleDate.date} />
-              </div>
-              <h2>SPECS</h2>
-              <p>
-                Each G’EVOL is Randomly generated from over 150 traits. 
-                Each one is Unique and could easily steal your girl.
-              </p>
-              <p>
-                G’EVOLs has some traits unlike other Generative collections you may have seen before - Fresh, bold and colourful - A new way of thinking about what a generative collection can be.
-              </p>
-            </Col>
-            <Col md={6} sm={12}>
-              <img src="/images/sample.png" alt="peabot" style={{width: "450px"}}/>
-            </Col>
-          </Row>
-        </div>
-        {/* Discord */}
-        <div id="discord">
-          <Row>
-            <Col lg={6} md={6} sm={12}>
-              <div className="discord-title">
-                <h2>JOIN OUR DISCORD GROUP</h2>
-                <p>
-                  The EVOL Community is a hub for Degens and Creatives a-like, join the discord to stay ontop of all news and announcements. 
-                  All news regarding the G'EVOLs drop will appear here first, do not miss out!
-                </p>
-              </div>
-              <div className="discord-btn">
-                <Button size="lg">DISCORD</Button>
-              </div>
-            </Col>
-            <Col lg={6} md={6} sm={12}>
-              <img src="/images/discord-img.png" alt="DiscordImg" style={{width: "450px"}}/>
-            </Col>
-          </Row>
+          <div className="banner-imgs">
+            <img className="first-img" src="/images/PeaBots_2.png" alt="" />
+            <img className="second-img" src="/images/PeaBots_3.png" alt="" />
+          </div>    
         </div>
       </Container>
+      {/* About */}
+      <div id="about" >
+        <Container>
+          <h2 className="text-center">What are PeaBots?</h2>
+          <p className="passage1">
+            PeaBots are 10,000 randomly generated digital collectibles of various rarity living on the Ethereum blockchain as ERC-721 tokens and hosted on IPFS.
+            The total number of combinations possible amount to over 130 trillion which they think is enough to take over the human race.
+          </p>
+          <p className="passage2">
+            PeaBots were originally created by humans to protect the human race.
+            However a famed scientist accidentally left in some negative human traits during production that were meant to be removed in the final phase of experimentation.
+            Using their advanced intelligence PeaBots escaped a high security lab based in the outskirts of Tokyo and bred rapidly, growing in population and aiming to take over the human race.
+            PeaBots want to live like humans and have a built burning desire to be on top of the hierarchical structure of the earth's ecosystem.
+            Yes …. more superior than humans!
+          </p>
+          <p className="passage3">
+            PeaBots are the creation of Japanese female artist Isako Tokumei, inspired by 90's Japanese manga and City Pop.
+          </p>
+        </Container>
+      </div>
+      {/* communtiy */}
+      <div id="communtiy">
+        <Container>
+          <Row>
+            <Col lg={6} md={6} sm={12}>
+              <img src="/images/PeaBots_5.png" alt="" />
+            </Col>
+            <Col lg={6} md={6} sm={12}>
+              <div className="community-title">
+                <h2>Be part of the community</h2>
+                <p>
+                  Join other PeaBot fans in our Discord Community. Get news about importants dates, airdrops and more!
+                </p>
+              </div>
+              <div className="discord-btn ">
+                <Button className="d-flex align-items-center" size="lg">
+                  <svg id="discord-seeklogo.com" xmlns="http://www.w3.org/2000/svg" width="13.114" height="14.522" viewBox="0 0 13.114 14.522">
+                    <path id="Path_2" data-name="Path 2" d="M11.578,0H1.536A1.516,1.516,0,0,0,0,1.5v9.817a1.516,1.516,0,0,0,1.536,1.5h8.5l-.4-1.343.959.864.907.813,1.611,1.38V1.5A1.516,1.516,0,0,0,11.578,0ZM8.685,9.483s-.27-.312-.495-.588a2.361,2.361,0,0,0,1.356-.864,4.342,4.342,0,0,1-.862.428A5.051,5.051,0,0,1,7.6,8.771a5.415,5.415,0,0,1-1.941-.007,6.445,6.445,0,0,1-1.1-.312,4.461,4.461,0,0,1-.547-.247c-.022-.015-.045-.022-.067-.036a.1.1,0,0,1-.03-.022c-.135-.073-.21-.123-.21-.123a2.325,2.325,0,0,0,1.311.857c-.225.276-.5.6-.5.6a2.733,2.733,0,0,1-2.286-1.1A9.5,9.5,0,0,1,3.3,4.146,3.786,3.786,0,0,1,5.41,3.384l.075.087a5.107,5.107,0,0,0-1.971.951s.165-.087.442-.211a5.771,5.771,0,0,1,1.7-.457.76.76,0,0,1,.127-.015A6.542,6.542,0,0,1,7.3,3.725a6.249,6.249,0,0,1,2.256.7A5.035,5.035,0,0,0,7.689,3.5l.1-.116A3.786,3.786,0,0,1,9.9,4.146a9.495,9.495,0,0,1,1.079,4.233A2.756,2.756,0,0,1,8.685,9.483ZM5.2,6.092a.807.807,0,1,0,.764.806A.784.784,0,0,0,5.2,6.092m2.735,0A.807.807,0,1,0,8.7,6.9a.784.784,0,0,0-.764-.806" transform="translate(0 0)" fill="#fff"/>
+                  </svg>
+                  DISCORD
+                </Button>
+              </div>
+              <div className="twitter-btn">
+                <Button className="d-flex align-items-center" size="lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14.462" height="11.753" viewBox="0 0 14.462 11.753">
+                    <path id="Path_14" data-name="Path 14" d="M153.462,84.124a5.934,5.934,0,0,1-1.7.467,2.977,2.977,0,0,0,1.3-1.642,5.938,5.938,0,0,1-1.884.72,2.97,2.97,0,0,0-5.056,2.706,8.424,8.424,0,0,1-6.116-3.1,2.97,2.97,0,0,0,.918,3.961,2.955,2.955,0,0,1-1.344-.371c0,.012,0,.025,0,.037a2.969,2.969,0,0,0,2.38,2.909,2.974,2.974,0,0,1-1.34.051,2.97,2.97,0,0,0,2.772,2.061,5.953,5.953,0,0,1-3.685,1.27,6.018,6.018,0,0,1-.708-.042,8.438,8.438,0,0,0,12.99-7.109q0-.193-.009-.384A6.029,6.029,0,0,0,153.462,84.124Z" transform="translate(-139 -82.733)" fill="#fff"/>
+                  </svg>
+                  TWITTER
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      {/* specs */}
+      <div id="specs">
+        <Container>
+          <h2 className="text-center">Specs</h2>
+          <Row className="first-part">
+            <Col lg={6} md={6} sm={12}>
+              <div className="volume spec-box text-center">
+                <h4>Volume</h4>
+                <p>10,000 artworks with 290+ traits in 11 categories</p>
+              </div>
+            </Col>
+            <Col lg={6} md={6} sm={12}>
+              <div className="unique spec-box text-center">
+                <h4>Unique</h4>
+                <p>Unique Every PeaBot has an unique combination of traits with varying rarity … and personalities of course!</p>
+              </div>
+            </Col>
+          </Row>
+          <Row className="second-part">
+          <Col lg={6} md={6} sm={12}>
+              <div className="high-quality-art spec-box text-center">
+                <h4>High quality art</h4>
+                <p>High quality art Lovingly hand drawn by Japanese female artist Isako Tokumei.</p>
+              </div>
+            </Col>
+            <Col lg={6} md={6} sm={12}>
+              <div className="fair-minting-price spec-box text-center">
+                <h4>Fair minting price</h4>
+                <p>PeaBots will be sold at a flat price, of 0.08 ETH / token</p>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
       {/* Roadmap */}
       <div id="roadmap">
         <Container>
-          <h2 className="roadmap-header text-center mb-3">ROADMAP</h2>
-          <h5 className="roadmap-content mb-5">
-            The PeaBot is a full time project for us now and it will continue to be after the public sale. 
-            Below is what we're working towards in the short term. 
-            Each milestone unlocks when a certain % of doges have been minted. 
-            Future developments will be decided and voted upon by the community.
-          </h5>
-          <div className="roadmap-step" style={{marginTop: "20px"}}>
+          <h2 className="roadmap-header text-center mb-3">Roadmap</h2>
+          <div className="roadmap-step">
             <div className="roadmap-item d-flex mb-2">
               <div className="roadmap-progress">
-                <div className="roadmap-progress-circle">
-                  <div className="roadmap-progress-value">
-                    20%
-                  </div>
-                </div>
-                <img src="/images/arrow.png" alt="" />
+                <img src="/images/roadmap-progress.png" alt="" />
               </div>
               <div className="roadmap-content">
-                <div>
-                  Some of Doge NFTs will be airdropped to our early adopters and fanbase
-                </div>
-                <div>
-                  We ramp up our Discord and social media management, which will include a pack of community managers and moderators to bring our Doge community to the moon 🌙
-                </div>
+                <h4>
+                  Private sale & Public sale
+                </h4>
+                <p>
+                  Our team really loves PeaBots and the future opportunities this will bring. 
+                  We hope you can take part in this journey and enjoy it with us!
+                </p>
               </div>
             </div>
             <div className="roadmap-item d-flex mb-2">
               <div className="roadmap-progress">
-                <div className="roadmap-progress-circle">
-                  <div className="roadmap-progress-value">
-                    50%
-                  </div>
-                </div>
-                <img src="/images/arrow.png" alt="" />
+                <img src="/images/roadmap-progress.png" alt="" />
               </div>
               <div className="roadmap-content">
-                <div>
-                  $20,000 donation fund will be established and with the help of the community we will decide on a charity who is a
-                </div>
-                <div>
-                good partner for our project. With the project we want to bring together a community of doge and dog lovers 🐶
-                </div>
+                <h4>
+                  Exciting collaborations
+                </h4>
+                <p>
+                  We will be collaborating with other NFT projects/artists as well as looking for opportunities with brands outside of the NFT world for collaboration (toys, confectionery and other verticals).
+                </p>
               </div>
             </div>
             <div className="roadmap-item d-flex mb-2">
               <div className="roadmap-progress">
-                <div className="roadmap-progress-circle">
-                  <div className="roadmap-progress-value">
-                    70%
-                  </div>
-                </div>
-                <img src="/images/arrow.png" alt="" />
+                <img src="/images/roadmap-progress.png" alt="" />
               </div>
               <div className="roadmap-content">
-                <div>
-                  An exclusive The Doge Pound merch line will drop. This will be hats, Tshirts, and most importantly apparel for your
-                </div>
-                <div>
-                  dogs! We already have several designs done and ready to go!
-                </div>
+                <h4>
+                  ArtNext Japan Project
+                </h4>
+                <p>
+                  We want to take a role in assisting the next generation of artists in the fast changing NFT art industry. 
+                  We will be connecting art projects from around the world with the most talented young Japanese artists. 
+                  The aim is to bring the next generation talent and undiscovered gems onto the world stage and providing a platform to shine. 
+                  You will be given updates and invitation to participate as a community member for voting, early access, private sales and more.
+                </p>
               </div>
             </div>
             <div className="roadmap-item d-flex mb-2">
               <div className="roadmap-progress">
-                <div className="roadmap-progress-circle">
-                  <div className="roadmap-progress-value">
-                    90%
-                  </div>
-                </div>
-                <img src="/images/arrow.png" alt="" />
+                <img src="/images/roadmap-progress.png" alt="" />
               </div>
               <div className="roadmap-content">
-                <div>
-                  Community grant fund of $30,000 is launched. Create, design, develop, or build something that the community values (e.g. extra utility
-                </div>
-                <div>
-                  for the doges, additional art, memes, etc.) and receive funding from The Doge Pound team. In addition to this 2.5% of the OpenSea
-                </div>
-                <div>
-                  fees will go into the community grant forever! Building out the longevity and community is our #1 priority.
-                </div>
+                <h4>
+                  Airdrops
+                </h4>
+                <p>
+                  PeaBots Token holders will benefit from airdrops.
+                </p>
               </div>
             </div>
             <div className="roadmap-item d-flex mb-2">
               <div className="roadmap-progress">
-                <div className="roadmap-progress-circle">
-                  <div className="roadmap-progress-value">
-                    100%
-                  </div>
-                </div>
-                <img src="/images/arrow.png" alt="" />
+                <img src="/images/roadmap-progress.png" alt="" />
               </div>
               <div className="roadmap-content">
-                <div>
-                  We will establish a liquidity pool and seed it in order to help stabilize the price of the doge NFTs/token. The plan is to
-                </div>
-                <div>
-                  launch this 2-3 days after launch and buy up a handful of doges at floor price.
-                </div>
-              </div>
-            </div>
-            <div className="roadmap-item d-flex mb-2">
-              <div className="roadmap-progress">
-                <div className="roadmap-progress-circle">
-                  <div className="roadmap-progress-value">
-                    <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" height="38" width="38" xmlns="http://www.w3.org/2000/svg"><path d="M256 421.6c-18.1 0-33.2-6.8-42.9-10.9-5.4-2.3-11.3 1.8-10.9 7.6l3.5 51c.2 3.1 3.8 4.7 6.3 2.8l14.5-11c1.8-1.4 4.5-.9 5.7 1l20.5 32.1c1.5 2.4 5.1 2.4 6.6 0l20.5-32.1c1.2-1.9 3.9-2.4 5.7-1l14.5 11c2.5 1.9 6.1.3 6.3-2.8l3.5-51c.4-5.8-5.5-10-10.9-7.6-9.8 4.1-24.8 10.9-42.9 10.9z"></path><path d="M397.7 293.1l-48-49.1c0-158-93.2-228-93.2-228s-94.1 70-94.1 228l-48 49.1c-1.8 1.8-2.6 4.5-2.2 7.1L130.6 412c.9 5.7 7.1 8.5 11.8 5.4l67.1-45.4s20.7 20 47.1 20c26.4 0 46.1-20 46.1-20l67.1 45.4c4.6 3.1 10.8.3 11.8-5.4l18.5-111.9c.2-2.6-.6-5.2-2.4-7zM256.5 192c-17 0-30.7-14.3-30.7-32s13.8-32 30.7-32c17 0 30.7 14.3 30.7 32s-13.7 32-30.7 32z"></path></svg>
-                  </div>
-                </div>
-              </div>
-              <div className="roadmap-content" style={{borderBottom: "none"}}>
-                <div style={{marginBottom: "15px"}}>
-                  <div>
-                    🚀🚀 Already in the works 🚀🚀
-                  </div>
-                  <div>
-                    We will make Doges ready for MetaVerse / 3D. (We will leak some previews of this as we’ve secretly been working on
-                  </div>
-                  <div>
-                    this for a while)
-                  </div>
-                </div>
-                <div style={{marginBottom: "15px"}}>
-                  <div>
-                    Companion NFT will be dropped. (Every doge lover that is holding a doge down the road will get a companion NFT for
-                  </div>
-                  <div>
-                    free)
-                  </div>
-                </div>
-                <div style={{marginBottom: "15px"}}>
-                  <div>
-                    The rest of the fate of this project will be determined by YOU, the community! Together, we plan to make this an ultra
-                  </div>
-                  <div>
-                    strong, fun loving, community! Let’s kick some butt! 🐶
-                  </div>
-                </div>
-                <div style={{marginBottom: "15px"}}>
-                  <div>
-                    Finally, there is a lot being discussed about potential partnerships and future developments of the project. Our focus
-                  </div>
-                  <div>
-                    for the time being is having a super smooth launch and delivering on everything listed above. We don’t think it is fair
-                  </div>
-                  <div>
-                    to over hype things for now that aren’t set in stone.
-                  </div>
-                </div>
+                <h4>
+                  PeaBots Project #2
+                </h4>
+                <p>
+                  We'd love to have the PeaBot community involved in the decision regarding the 2nd PeaBots project : )
+                </p>
               </div>
             </div>
           </div>
+        </Container>
+      </div>
+      {/* team member */}
+      <div id="team">
+        <Container>
+          <h2 className="text-center">The Team</h2>
+          <Row>
+            <Col lg={3} md={6} sm={12}>
+              <div className="team-member">
+                <img src="/images/team-member.png" alt="" />
+                <h5>Isako</h5>
+                <p>Artist / Founder</p>
+              </div>
+            </Col>
+            <Col lg={3} md={6} sm={12}>
+              <div className="team-member">
+                <img src="/images/team-member.png" alt="" />
+                <h5>Toldo</h5>
+                <p>Tech</p>
+              </div>
+            </Col>
+            <Col lg={3} md={6} sm={12}>
+              <div className="team-member">
+                <img src="/images/team-member.png" alt="" />
+                <h5>Antoniio</h5>
+                <p>Development</p>
+              </div>
+            </Col>
+            <Col lg={3} md={6} sm={12}>
+              <div className="team-member">
+                <img src="/images/team-member.png" alt="" />
+                <h5>Daichi</h5>
+                <p>PR</p>
+              </div>
+            </Col>
+          </Row>
         </Container>
       </div>
       {/* Faq */}
       <div id="faq">
         <Container>
           <h2 className="text-center">FREQUENTLY ASKED QUESTIONS</h2>
-          <Accordion title="How Much to Mint a G'EVOL?">
-            G'EVOLs will be listed at 0.1 ETH per mint
+          <Accordion title="How much is it to mint a PeaBot?">
+            PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
           </Accordion>
-          <Accordion title="What's It Like Inside Jupiter?">
-            888 G'EVOLS will be created and minted. 50 Mints will be reserved from the sale. These will be held for competitions and the team's memberships.
+          <Accordion title="How many will there be?">
+            PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
           </Accordion>
-          <Accordion title="Do I won the IP to the G'EVOLs I mint?">
-            No! Absolutely not! Just because apes did it doesn’t mean it applies to everything. This project is the life work of KidEight and all EVOLs IP and storyline stay in his complete control.
-            Tribute art of the EVOLs you own is fine, please don’t take the piss.
-            By purchasing an EVOL you are effectively a part of the EVOL story and timeline, buckle in.
+          <Accordion title="What about IP?">
+            PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
           </Accordion>
-          <Accordion title="I'm worried about all the attention I'll get with my new G'EVOL mint!">
-            Get Used to it
+          <Accordion title="When is the release date?">
+            PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
+          </Accordion>
+          <Accordion title="Total number of tokens">
+            PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
+          </Accordion>
+          <Accordion title="Tokens withheld from sale">
+            PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
+          </Accordion>
+          <Accordion title="Price per token">
+            PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
+          </Accordion>
+          <Accordion title="Token type">
+            PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
+          </Accordion>
+          <Accordion title="Blockchain">
+            PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
+          </Accordion>
+          <Accordion title="File hosting">
+            PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
           </Accordion>
         </Container>
       </div>
       {/*Footer*/}
       <div  className="footer container-fluid text-center text-md-left">
         <Container>
-          <div className="d-flex justify-content-between">
-            <img src="/images/logo.svg" alt="" style={{width: "115px"}}/>
+          <div className="d-flex justify-content-start">
+            <img src="/images/footer-logo.svg" alt="" />
+          </div>
+          <div className="d-flex justify-content-end">
             <ul className="d-flex list-unstyled">
-              <li><a href="#dicord">Discord</a></li>
-              <li><a href="#mint">Mint</a></li>
-              <li><a href="#roadmap">Roadmap</a></li>
-              <li><a href="#faq">Faq</a></li>
+              <li><a href="#about">ABOUT</a></li>
+              <li><a href="#community">COMMUNITY</a></li>
+              <li><a href="#specs">SPECS</a></li>
+              <li><a href="#roadmap">ROADMAP</a></li>
+              <li><a href="#team">TEAM</a></li>
+              <li><a href="#faq">FAQ</a></li>
             </ul>
-            <Button size="lg" onClick={handleShow}>MINT</Button>
           </div>
           <hr />
           <div className="d-flex justify-content-between">
             <div>
-              © Copyright 2021 G'Evols
+              Peabots 2021. All rights reserved
             </div>
-            <ul class="d-flex list-unstyled">
+            <ul className="d-flex list-unstyled">
               <li>
                 <a href="https://t.co/q9DCKK06lL" title="Discord">
                   <FontAwesomeIcon icon={["fab", "discord"]} />

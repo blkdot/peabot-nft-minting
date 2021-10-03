@@ -2,29 +2,25 @@
 html {
 	padding: 0;
 	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-	background: #ec7227;
+	font-family: 'Poppins', sans-serif;
 	color: #fff;
 }
 
 body {
 	padding: 0;
 	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-	background: #ec7227;
+	font-family: 'Poppins', sans-serif;
+	background: #6FA456;
 	color: #fff;
 }
 
 .header {
 	padding: 0px 15px;
+	font-size: 15px;
+	line-height: 23px;
+	letter-spacing: 0.75px;
 	.nav-item {
-		padding-left: 50px;
-		&:last-child {
-			display: flex;
-			align-items: center;
-			padding-top: 17px;
-			padding-bottom: 23px;
-		}
+		padding-left: 30px;
 		.btn {
 			border-radius: 24px !important;
 			background-color: transparent;
@@ -35,6 +31,18 @@ body {
 				background-color: transparent;
 			}
 		}
+	}
+	.navbar-nav {
+		width: 100%;
+	}
+	.discord {
+		padding-left: 14px;
+	}
+	.twitter {
+		padding-left: 14px;
+	}
+	.wallet-connect-btn {
+		padding-left: 20px;
 	}
 	.navbar {
 		padding: 10px 0px;
@@ -70,7 +78,7 @@ body {
 		opacity: 1;
 		-webkit-transform: translateY(0%);
 		transform: translateY(0%);
-		background: linear-gradient(111.34deg, #f35c00, #b16b40);
+		background: linear-gradient(111.34deg, #6FA456 , #475f3c);
 	}
 }
 @media (max-width: 767px) {
@@ -84,93 +92,141 @@ body {
 	.header {
 		.navbar-collapse {
 			display: flex !important;
-			justify-content: flex-end !important;
 		}
 	}
 }
 
 .banner {
 	margin-top: 30px;
-	h1 {
-		margin-top: 48px;
-    text-align: center;
-		font-size: 3.5rem;
-	}
-}
-
-#mint {
-	margin-top: 70px;
-	p {
-		font-size: 1.25rem;
-	}
 	h2 {
-		margin-top: 20px;
-		font-weight: bold;
+		font-size: 45px;
+    line-height: 50px;
+    letter-spacing: 0;
+    width: 296px;
+		margin-bottom: 24px;
 	}
-	.banner-btn {
-		button {
-			font-weight: bold;
-			color: #EC7227;
-			background: #fff;
-			border: none;
-			margin-right: 30px;
-		}
-		.timer {
-			.clock {
-				display: flex;
-				position: relative;
-				flex-direction: column;
-				width: 70px;
-				height: 70px;
-				border-radius: 50%;
-				background-color: #fff;
-				color: #EC7227;
-				margin-right: 6px;
-				&:last-child {
-					margin-right: 0;
-				}
-				.num {
-					position: absolute;
-					top: 50%;
-					left: 50%;
-					transform: translate(-50%, -58%);
-					font-size: 28px;
-					font-weight: bold;
-					line-height: 28px;
-				}
-				.unit {
-					position: absolute;
-					top: 66%;
-					left: 50%;
-					transform: translate(-50%, 0%);
-					font-size: 14px;
-					line-height: 14px;
-				}
-			}
-		}
-	}
-	
-}
-
-#discord {
-	margin-top: 70px;
 	p {
-		font-size: 1.25rem;
+		font-size: 20px;
+    line-height: 30px;
+    width: 414px;
+    margin-bottom: 49px;
 	}
-	h2 {
-		margin-top: 20px;
-		font-weight: bold;
+	.banner-imgs {
+		position: relative;
+		.second-img {
+			position: absolute;
+			left: 290px;
+		}
 	}
 	button {
-		font-weight: bold;
-    color: #EC7227;
-    background: #fff;
-    border: none;
+		padding: 19px 30px;
+    background: transparent;
+    border: 3px solid #FFF;
+    border-radius: 45px;
+    font-size: 18px;
+    line-height: 27px;
+	}
+}
+
+#about {
+	background-color: #0F1615;
+	margin-top: -20px;
+	padding-top: 68px;
+	padding-bottom: 65px;
+	h2 {
+		font-size: 40px;
+		line-height: 60px;
+		letter-spacing: 0;
+		margin-bottom: 40px;
+	}
+	p {
+		font-size: 17px;
+		line-height: 29px;
+		letter-spacing: 0;
+	}
+	.passage1 {
+		margin-bottom: 35px;
+	}
+	.passage2 {
+		margin-bottom: 35px;
+	}
+}
+
+#communtiy {
+	background-color: #1C2423;
+	padding-top: 65px;
+	button {
+		padding: 16px 28px;
+		color: #fff;
+		border-radius: 45px;
+		font-size: 13px;
+		line-height: 20px;
+		border: none;
+	}
+	.discord-btn {
+		margin-bottom: 16px;
+		svg {
+			margin-right: 11px;
+		}
+		button {
+			background-color: #4959D3;
+		}
+	}
+	.twitter-btn {
+		svg {
+			margin-right: 11px;
+		}
+		button {
+			background-color: #559CE9 ;
+		}
+	}
+}
+
+#specs {
+	padding-top: 56px;
+	padding-bottom: 118px;
+	background-color: #0F1615;
+	h2 {
+		font-size: 40px;
+		line-height: 60px;
+		letter-spacing: 0;
+		margin-bottom: 49px;
+	}
+	.spec-box {
+		border: 3px solid #767776;
+		height: 160px;
+		h4 {
+			font-size: 17px;
+			line-height: 29px;
+			font-weight: 600;
+		}
+		p {
+			font-size: 17px;
+			line-height: 29px;
+			font-weight: 300;
+		}
+	}
+	.first-part {
+		margin-bottom: 50px;
+		.volume {
+			padding: 25px 85px;
+		}
+		.unique {
+			padding: 25px 16px;
+		}
+	}
+	.second-part {
+		.high-quality-art {
+			padding: 25px 16px;
+		}
+		.fair-minting-price {
+			padding: 25px 16px;
+		}
 	}
 }
 
 #roadmap {
-	background-color: #192423;
+	background-color: #1C2423;
 	padding-top: 56px;
 	.roadmap-step {
 		font-size: 1rem;
@@ -199,8 +255,12 @@ body {
 	}
 }
 
+#team {
+	background-color: #0F1615;
+}
+
 #faq {
-	background-color: #192423;
+	background-color: #1C2423 ;
 	padding-top: 50px;
 	padding-bottom: 50px;
 	.accordion-wrapper {
@@ -209,13 +269,14 @@ body {
 				margin-top: 0.5em;
 			}
 		}
+		border-bottom: 1px solid #767776;
 	}
 	.accordion-item {
 		overflow: hidden;
 		transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
 		height: auto;
 		max-height: 9999px;
-		background-color: #192423;
+		background-color: #1C2423;
 		border: none;
 	}
 	.accordion-item.collapsed {
@@ -232,12 +293,9 @@ body {
 		justify-content: space-between;
 		align-items: center;
 		&::after {
-			content: "";
+			content: "\002B";
 			width: 0;
 			height: 0;
-			border-left: 5px solid transparent;
-			border-right: 5px solid transparent;
-			border-top: 5px solid currentColor;
 		}
 		&:hover {
 			color: #fff;
@@ -246,7 +304,7 @@ body {
 	.accordion-title.open {
 		color: #fff;
 		&::after {
-			content: "";
+			content: "\2212";
 			border-top: 0;
 			border-bottom: 5px solid;
 		}
@@ -259,7 +317,10 @@ body {
 .footer {
 	padding-top: 70px;
 	padding-bottom: 70px;
-	background-color: #0c1615;
+	background-color: #1C2423 ;
+	hr {
+		border: 1px solid #969696;
+	}
 	ul {
 		li {
 			padding: 0px 16px;
