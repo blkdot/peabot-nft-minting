@@ -19,13 +19,12 @@ import Form from 'react-bootstrap/Form';
 
 // get our fontawesome imports
 import { fab, faDiscord, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Web3 from 'web3';
 import {ADDRESS, ABI} from "./config.js";
 import { library } from '@fortawesome/fontawesome-svg-core';
 
-import Timer from './timer';
+// import Timer from './timer';
 
 library.add(
   fab,
@@ -74,6 +73,7 @@ function App() {
   const [publicSaleDate, setPublicSaleDate] = useState({name: 'Public Sale Date', date: 'September 30, 2021'});
   
   const toggle = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -105,7 +105,8 @@ function App() {
       window.web3 = new Web3(window.ethereum);
      
     } else {
-      alert("No Ethereum interface injected into browser. Read-only access");
+      alert("No Ethereum interface injected into browser. Please install Metamask.");
+      return;
     }
 
     window.ethereum.enable()
@@ -151,13 +152,13 @@ function App() {
    
   }
   
-  const handleShow = () => {
-    if (signedIn) {
-      setShow(true);
-    } else {
-      alert('please connnect your metamask');
-    }
-  }
+  // const handleShow = () => {
+  //   if (signedIn) {
+  //     setShow(true);
+  //   } else {
+  //     alert('please connnect your metamask');
+  //   }
+  // }
 
   const handleClose = () => setShow(false);
 
@@ -209,46 +210,48 @@ function App() {
         <Navbar light expand="md">
           <Container>
             <NavbarBrand href="/">
-              <img src="/images/logo.svg" alt="" style={{width: "115px"}}/>
+              <img src="/images/logo.svg" alt="" />
             </NavbarBrand>
             <NavbarToggler onClick={toggle} />
             <Collapse isOpen={isOpen} navbar>
               <Nav navbar className = "d-flex justify-content-between">
-                <div className="d-flex align-items-center">
+                <div className="menu d-flex align-items-center">
                   <NavItem>
-                    <NavLink href="/#about">ABOUT</NavLink>
+                    <NavLink href="/#about" onClick={closeMenu}>ABOUT</NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink href="/#community">COMMUNITY</NavLink>
+                    <NavLink href="/#community" onClick={closeMenu}>COMMUNITY</NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink href="#specs">SPECS</NavLink>
+                    <NavLink href="#specs" onClick={closeMenu}>SPECS</NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink href="#roadmap">ROADMAP</NavLink>
+                    <NavLink href="#roadmap" onClick={closeMenu}>ROADMAP</NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink href="#team">TEAM</NavLink>
+                    <NavLink href="#team" onClick={closeMenu}>TEAM</NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink href="#faq">FAQ</NavLink>
+                    <NavLink href="#faq" onClick={closeMenu}>FAQ</NavLink>
                   </NavItem>
                 </div>
                 <div className="d-flex align-items-center">
-                  <NavItem className="discord">
-                    <NavLink href="#faq">
-                      <svg id="discord-seeklogo.com" xmlns="http://www.w3.org/2000/svg" width="24.502" height="27.133" viewBox="0 0 24.502 27.133">
-                        <path id="Path_2" data-name="Path 2" d="M21.632,0H2.87A2.833,2.833,0,0,0,0,2.795V21.137a2.833,2.833,0,0,0,2.87,2.795H18.748l-.742-2.51L19.8,23.036l1.694,1.519,3.01,2.578V2.795A2.833,2.833,0,0,0,21.632,0Zm-5.4,17.718s-.5-.583-.924-1.1A4.412,4.412,0,0,0,17.838,15a8.113,8.113,0,0,1-1.61.8,9.438,9.438,0,0,1-2.03.583,10.117,10.117,0,0,1-3.626-.014,12.042,12.042,0,0,1-2.058-.583,8.336,8.336,0,0,1-1.022-.461c-.042-.027-.084-.041-.126-.068a.193.193,0,0,1-.056-.041c-.252-.136-.392-.231-.392-.231a4.344,4.344,0,0,0,2.45,1.6c-.42.516-.938,1.126-.938,1.126a5.107,5.107,0,0,1-4.27-2.062A17.741,17.741,0,0,1,6.175,7.747a7.074,7.074,0,0,1,3.934-1.425l.14.163A9.542,9.542,0,0,0,6.567,8.262s.308-.163.826-.393a10.783,10.783,0,0,1,3.178-.855,1.421,1.421,0,0,1,.238-.027,12.223,12.223,0,0,1,2.828-.027,11.675,11.675,0,0,1,4.214,1.3,9.407,9.407,0,0,0-3.486-1.723l.2-.217A7.074,7.074,0,0,1,18.5,7.747a17.74,17.74,0,0,1,2.016,7.909A5.15,5.15,0,0,1,16.227,17.718ZM9.717,11.382a1.508,1.508,0,1,0,1.428,1.506,1.465,1.465,0,0,0-1.428-1.506m5.111,0a1.508,1.508,0,1,0,1.428,1.506,1.465,1.465,0,0,0-1.428-1.506" fill="#fff"/>
-                      </svg>
-                    </NavLink>
-                  </NavItem>
-                  <NavItem className="twitter">
-                    <NavLink href="#faq">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="26.657" height="21.663" viewBox="0 0 26.657 21.663">
-                        <path id="Path_3" data-name="Path 3" d="M165.657,85.3a10.937,10.937,0,0,1-3.141.861,5.487,5.487,0,0,0,2.4-3.026,10.944,10.944,0,0,1-3.473,1.327,5.474,5.474,0,0,0-9.319,4.988,15.526,15.526,0,0,1-11.272-5.714,5.475,5.475,0,0,0,1.692,7.3,5.447,5.447,0,0,1-2.477-.684c0,.023,0,.046,0,.069a5.472,5.472,0,0,0,4.387,5.363,5.482,5.482,0,0,1-2.47.094,5.474,5.474,0,0,0,5.109,3.8,10.972,10.972,0,0,1-6.792,2.341,11.094,11.094,0,0,1-1.3-.077,15.553,15.553,0,0,0,23.943-13.1q0-.356-.016-.708A11.112,11.112,0,0,0,165.657,85.3Z" transform="translate(-139 -82.733)" fill="#fff"/>
-                      </svg>
-                    </NavLink>
-                  </NavItem>
+                  <div className="social-icons d-flex">
+                    <NavItem className="discord">
+                      <NavLink href="#">
+                        <svg id="discord-seeklogo.com" xmlns="http://www.w3.org/2000/svg" width="24.502" height="27.133" viewBox="0 0 24.502 27.133">
+                          <path id="Path_2" data-name="Path 2" d="M21.632,0H2.87A2.833,2.833,0,0,0,0,2.795V21.137a2.833,2.833,0,0,0,2.87,2.795H18.748l-.742-2.51L19.8,23.036l1.694,1.519,3.01,2.578V2.795A2.833,2.833,0,0,0,21.632,0Zm-5.4,17.718s-.5-.583-.924-1.1A4.412,4.412,0,0,0,17.838,15a8.113,8.113,0,0,1-1.61.8,9.438,9.438,0,0,1-2.03.583,10.117,10.117,0,0,1-3.626-.014,12.042,12.042,0,0,1-2.058-.583,8.336,8.336,0,0,1-1.022-.461c-.042-.027-.084-.041-.126-.068a.193.193,0,0,1-.056-.041c-.252-.136-.392-.231-.392-.231a4.344,4.344,0,0,0,2.45,1.6c-.42.516-.938,1.126-.938,1.126a5.107,5.107,0,0,1-4.27-2.062A17.741,17.741,0,0,1,6.175,7.747a7.074,7.074,0,0,1,3.934-1.425l.14.163A9.542,9.542,0,0,0,6.567,8.262s.308-.163.826-.393a10.783,10.783,0,0,1,3.178-.855,1.421,1.421,0,0,1,.238-.027,12.223,12.223,0,0,1,2.828-.027,11.675,11.675,0,0,1,4.214,1.3,9.407,9.407,0,0,0-3.486-1.723l.2-.217A7.074,7.074,0,0,1,18.5,7.747a17.74,17.74,0,0,1,2.016,7.909A5.15,5.15,0,0,1,16.227,17.718ZM9.717,11.382a1.508,1.508,0,1,0,1.428,1.506,1.465,1.465,0,0,0-1.428-1.506m5.111,0a1.508,1.508,0,1,0,1.428,1.506,1.465,1.465,0,0,0-1.428-1.506" fill="#fff"/>
+                        </svg>
+                      </NavLink>
+                    </NavItem>
+                    <NavItem className="twitter">
+                      <NavLink href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26.657" height="21.663" viewBox="0 0 26.657 21.663">
+                          <path id="Path_3" data-name="Path 3" d="M165.657,85.3a10.937,10.937,0,0,1-3.141.861,5.487,5.487,0,0,0,2.4-3.026,10.944,10.944,0,0,1-3.473,1.327,5.474,5.474,0,0,0-9.319,4.988,15.526,15.526,0,0,1-11.272-5.714,5.475,5.475,0,0,0,1.692,7.3,5.447,5.447,0,0,1-2.477-.684c0,.023,0,.046,0,.069a5.472,5.472,0,0,0,4.387,5.363,5.482,5.482,0,0,1-2.47.094,5.474,5.474,0,0,0,5.109,3.8,10.972,10.972,0,0,1-6.792,2.341,11.094,11.094,0,0,1-1.3-.077,15.553,15.553,0,0,0,23.943-13.1q0-.356-.016-.708A11.112,11.112,0,0,0,165.657,85.3Z" transform="translate(-139 -82.733)" fill="#fff"/>
+                        </svg>
+                      </NavLink>
+                    </NavItem>
+                  </div>
                   <NavItem className="wallet-connect-btn">
                     {!signedIn ? <Button size="sm" onClick={connectMetamask}>CONNECT WALLET</Button>
                     :
@@ -262,19 +265,23 @@ function App() {
       </div>
       {/* Banner */}
       <Container>
-        <div className="banner d-flex">
-          <div>
-            <h2>Join the PeaBot Army</h2>
-            <p>A collection of 10,000 unique PeaBots, forever dreaming of living like humans.</p>
-            {
-              !signedIn ? <Button size="sm" onClick={connectMetamask}>CONNECT WALLET</Button>
-                :
-                <Button size="sm" onClick={disconnectMetamask}>DISCONNECT WALLET</Button> 
-            }
+        <div className="banner d-flex justify-content-between">
+          <div className="banner-content d-flex">
+            <div>
+              <h2>Join the PeaBot Army</h2>
+              <p>A collection of 10,000 unique PeaBots, forever dreaming of living like humans.</p>
+            </div>
+            <div className="d-flex align-items-center">
+              {
+                !signedIn ? <Button size="sm" onClick={connectMetamask}>CONNECT WALLET</Button>
+                  :
+                  <Button size="sm" onClick={disconnectMetamask}>DISCONNECT WALLET</Button> 
+              }
+            </div>
+            
           </div>
-          <div className="banner-imgs">
-            <img className="first-img" src="/images/PeaBots_2.png" alt="" />
-            <img className="second-img" src="/images/PeaBots_3.png" alt="" />
+          <div className="banner-img">
+            <img className="img" src="/images/banner.png" alt="" />
           </div>    
         </div>
       </Container>
@@ -299,7 +306,7 @@ function App() {
         </Container>
       </div>
       {/* communtiy */}
-      <div id="communtiy">
+      <div id="community">
         <Container>
           <Row>
             <Col lg={6} md={6} sm={12}>
@@ -369,16 +376,16 @@ function App() {
       {/* Roadmap */}
       <div id="roadmap">
         <Container>
-          <h2 className="roadmap-header text-center mb-3">Roadmap</h2>
+          <h2 className="roadmap-header text-center">Roadmap</h2>
           <div className="roadmap-step">
             <div className="roadmap-item d-flex mb-2">
               <div className="roadmap-progress">
                 <img src="/images/roadmap-progress.png" alt="" />
               </div>
               <div className="roadmap-content">
-                <h4>
+                <p className="roadmap-content-title">
                   Private sale & Public sale
-                </h4>
+                </p>
                 <p>
                   Our team really loves PeaBots and the future opportunities this will bring. 
                   We hope you can take part in this journey and enjoy it with us!
@@ -390,9 +397,9 @@ function App() {
                 <img src="/images/roadmap-progress.png" alt="" />
               </div>
               <div className="roadmap-content">
-                <h4>
+                <p className="roadmap-content-title">
                   Exciting collaborations
-                </h4>
+                </p>
                 <p>
                   We will be collaborating with other NFT projects/artists as well as looking for opportunities with brands outside of the NFT world for collaboration (toys, confectionery and other verticals).
                 </p>
@@ -403,9 +410,9 @@ function App() {
                 <img src="/images/roadmap-progress.png" alt="" />
               </div>
               <div className="roadmap-content">
-                <h4>
+                <p className="roadmap-content-title">
                   ArtNext Japan Project
-                </h4>
+                </p>
                 <p>
                   We want to take a role in assisting the next generation of artists in the fast changing NFT art industry. 
                   We will be connecting art projects from around the world with the most talented young Japanese artists. 
@@ -419,9 +426,9 @@ function App() {
                 <img src="/images/roadmap-progress.png" alt="" />
               </div>
               <div className="roadmap-content">
-                <h4>
+                <p className="roadmap-content-title">
                   Airdrops
-                </h4>
+                </p>
                 <p>
                   PeaBots Token holders will benefit from airdrops.
                 </p>
@@ -432,14 +439,17 @@ function App() {
                 <img src="/images/roadmap-progress.png" alt="" />
               </div>
               <div className="roadmap-content">
-                <h4>
+                <p className="roadmap-content-title">
                   PeaBots Project #2
-                </h4>
+                </p>
                 <p>
                   We'd love to have the PeaBot community involved in the decision regarding the 2nd PeaBots project : )
                 </p>
               </div>
             </div>
+          </div>
+          <div className="roadmap-description">
+            Roadmap may be subject to change and improvements
           </div>
         </Container>
       </div>
@@ -448,28 +458,31 @@ function App() {
         <Container>
           <h2 className="text-center">The Team</h2>
           <Row>
-            <Col lg={3} md={6} sm={12}>
+            <Col lg={3} md={6} sm={6}>
               <div className="team-member">
                 <img src="/images/team-member.png" alt="" />
                 <h5>Isako</h5>
-                <p>Artist / Founder</p>
+                <div className="d-flex justify-content-between align-items-start">
+                  <p>Artist / Founder</p>
+                  <img src="/images/founder.svg" alt="" />
+                </div>
               </div>
             </Col>
-            <Col lg={3} md={6} sm={12}>
+            <Col lg={3} md={6} sm={6}>
               <div className="team-member">
                 <img src="/images/team-member.png" alt="" />
                 <h5>Toldo</h5>
                 <p>Tech</p>
               </div>
             </Col>
-            <Col lg={3} md={6} sm={12}>
+            <Col lg={3} md={6} sm={6}>
               <div className="team-member">
                 <img src="/images/team-member.png" alt="" />
                 <h5>Antoniio</h5>
                 <p>Development</p>
               </div>
             </Col>
-            <Col lg={3} md={6} sm={12}>
+            <Col lg={3} md={6} sm={6}>
               <div className="team-member">
                 <img src="/images/team-member.png" alt="" />
                 <h5>Daichi</h5>
@@ -482,7 +495,7 @@ function App() {
       {/* Faq */}
       <div id="faq">
         <Container>
-          <h2 className="text-center">FREQUENTLY ASKED QUESTIONS</h2>
+          <h2 className="text-center">FAQ</h2>
           <Accordion title="How much is it to mint a PeaBot?">
             PeaBots will be sold at a flat price of 0.08 ETH per token. We have cut out all unnecesary bits so we can share PeaBots at a fair price.
           </Accordion>
@@ -516,7 +529,7 @@ function App() {
         </Container>
       </div>
       {/*Footer*/}
-      <div  className="footer container-fluid text-center text-md-left">
+      <div className="footer container-fluid text-center text-md-left">
         <Container>
           <div className="d-flex justify-content-start">
             <img src="/images/footer-logo.svg" alt="" />
@@ -532,19 +545,23 @@ function App() {
             </ul>
           </div>
           <hr />
-          <div className="d-flex justify-content-between">
+          <div className="footer-right d-flex justify-content-between align-items-center">
             <div>
               Peabots 2021. All rights reserved
             </div>
             <ul className="d-flex list-unstyled">
               <li>
-                <a href="https://t.co/q9DCKK06lL" title="Discord">
-                  <FontAwesomeIcon icon={["fab", "discord"]} />
+                <a href="#" title="Discord">
+                  <svg id="discord-seeklogo.com" xmlns="http://www.w3.org/2000/svg" width="24.502" height="27.133" viewBox="0 0 24.502 27.133">
+                    <path id="Path_2" data-name="Path 2" d="M21.632,0H2.87A2.833,2.833,0,0,0,0,2.795V21.137a2.833,2.833,0,0,0,2.87,2.795H18.748l-.742-2.51L19.8,23.036l1.694,1.519,3.01,2.578V2.795A2.833,2.833,0,0,0,21.632,0Zm-5.4,17.718s-.5-.583-.924-1.1A4.412,4.412,0,0,0,17.838,15a8.113,8.113,0,0,1-1.61.8,9.438,9.438,0,0,1-2.03.583,10.117,10.117,0,0,1-3.626-.014,12.042,12.042,0,0,1-2.058-.583,8.336,8.336,0,0,1-1.022-.461c-.042-.027-.084-.041-.126-.068a.193.193,0,0,1-.056-.041c-.252-.136-.392-.231-.392-.231a4.344,4.344,0,0,0,2.45,1.6c-.42.516-.938,1.126-.938,1.126a5.107,5.107,0,0,1-4.27-2.062A17.741,17.741,0,0,1,6.175,7.747a7.074,7.074,0,0,1,3.934-1.425l.14.163A9.542,9.542,0,0,0,6.567,8.262s.308-.163.826-.393a10.783,10.783,0,0,1,3.178-.855,1.421,1.421,0,0,1,.238-.027,12.223,12.223,0,0,1,2.828-.027,11.675,11.675,0,0,1,4.214,1.3,9.407,9.407,0,0,0-3.486-1.723l.2-.217A7.074,7.074,0,0,1,18.5,7.747a17.74,17.74,0,0,1,2.016,7.909A5.15,5.15,0,0,1,16.227,17.718ZM9.717,11.382a1.508,1.508,0,1,0,1.428,1.506,1.465,1.465,0,0,0-1.428-1.506m5.111,0a1.508,1.508,0,1,0,1.428,1.506,1.465,1.465,0,0,0-1.428-1.506" fill="#fff"/>
+                  </svg>
                 </a>
               </li>
               <li>
-                <a href="https://twitter.com/gevolsNFT" title="Twitter">
-                  <FontAwesomeIcon icon={["fab", "twitter"]} />
+                <a href="#" title="Discord">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="26.657" height="21.663" viewBox="0 0 26.657 21.663">
+                    <path id="Path_3" data-name="Path 3" d="M165.657,85.3a10.937,10.937,0,0,1-3.141.861,5.487,5.487,0,0,0,2.4-3.026,10.944,10.944,0,0,1-3.473,1.327,5.474,5.474,0,0,0-9.319,4.988,15.526,15.526,0,0,1-11.272-5.714,5.475,5.475,0,0,0,1.692,7.3,5.447,5.447,0,0,1-2.477-.684c0,.023,0,.046,0,.069a5.472,5.472,0,0,0,4.387,5.363,5.482,5.482,0,0,1-2.47.094,5.474,5.474,0,0,0,5.109,3.8,10.972,10.972,0,0,1-6.792,2.341,11.094,11.094,0,0,1-1.3-.077,15.553,15.553,0,0,0,23.943-13.1q0-.356-.016-.708A11.112,11.112,0,0,0,165.657,85.3Z" transform="translate(-139 -82.733)" fill="#fff"/>
+                  </svg>
                 </a>
               </li>
             </ul>
