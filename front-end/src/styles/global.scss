@@ -97,10 +97,16 @@ body {
 		.navbar-toggler-icon {
 			background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 		}
+		.navbar-toggler {
+			border: none;
+			&:focus {
+				box-shadow: none;
+			}
+		}
 	}
 	.navbar-brand {
 		img {
-			width: 70px;
+			width: 65px;
 		}
 	}
 }
@@ -125,7 +131,12 @@ body {
 		opacity: 1;
 		-webkit-transform: translateY(0%);
 		transform: translateY(0%);
-		background: #5a734d;
+		background: #6FA456;
+	}
+	.navbar-brand {
+		img {
+			width: 50px;
+		}
 	}
 }
 
@@ -133,6 +144,10 @@ body {
 	.header {
 		.navbar-collapse {
 			background-color: #272727;
+			ul {
+				padding-top: 15px;
+    		padding-bottom: 18px;
+			}
 			.menu {
 				flex-direction: column;
 				align-items: start !important;
@@ -184,19 +199,21 @@ body {
 		}
 	}
 	.banner-img {
+		width: 660px;
+		@media screen and (max-width: 991px) {
+			width: 550px;
+		}
+		@media screen and (max-width: 575px) {
+			width: 450px;
+		}
+		@media screen and (max-width: 479px) {
+			width: 350px;
+		}
 		@media screen and (max-width: 1199px) {
 			margin-bottom: 30px;
 		}
 		img {
-			@media screen and (max-width: 991px) {
-				width: 550px;
-			}
-			@media screen and (max-width: 575px) {
-				width: 450px;
-			}
-			@media screen and (max-width: 479px) {
-				width: 350px;
-			}
+			max-width: 100%;
 		}
 	}
 	.banner-content {
@@ -204,6 +221,9 @@ body {
 		flex-direction: column;
 		@media screen and (max-width: 1199px) {
 			flex-direction: row;
+		}
+		@media screen and (max-width: 767px) {
+			flex-direction: column;
 		}
 	}
 	button {
@@ -213,9 +233,22 @@ body {
     border-radius: 45px;
     font-size: 18px;
     line-height: 27px;
+		font-weight: 600;
 		@media screen and (max-width: 991px) {
 			font-size: 17px;
 			line-height: 25px;
+		}
+		&:active {
+			background-color: #6FA456;
+    	border-color: #fff;
+		}
+		&:focus {
+			background-color: #6FA456;
+    	border-color: #fff;
+		}
+		&:hover {
+			background-color: #609447;
+    	border-color: #fff;
 		}
 	}
 }
@@ -258,6 +291,10 @@ body {
 #community {
 	background-color: #1C2423;
 	padding-top: 98px;
+	@media screen and (max-width: 991px) {
+		padding-top: 50px;
+		padding-bottom: 40px;
+	}
 	@media screen and (max-width: 767px) {
 		padding-top: 50px;
 		padding-bottom: 40px;
@@ -285,7 +322,7 @@ body {
 		font-weight: 300;
 		margin-bottom: 35px;
 	}
-	button {
+	a {
 		padding: 16px 28px;
 		color: #fff;
 		border-radius: 45px;
@@ -294,24 +331,21 @@ body {
 		font-weight: 600;
 		border: none;
 	}
-	.discord-btn {
+	svg {
+		margin-right: 11px;
+	}
+	a.discord-btn {
+		background-color: #4959D3;
 		margin-bottom: 16px;
-		svg {
-			margin-right: 11px;
-		}
-		button {
-			background-color: #4959D3;
-		}
+		inline-size: fit-content;
+		text-decoration: none;
 	}
-	.twitter-btn {
-		svg {
-			margin-right: 11px;
-		}
-		button {
-			background-color: #559CE9 ;
-		}
+	a.twitter-btn {
+		background-color: #559CE9;
+		inline-size: fit-content;
+		text-decoration: none;
 	}
-	@media screen and (max-width: 991px) {
+@media screen and (max-width: 991px) {
 		p {
 			font-size: 15px;
 			line-height: 25px;
@@ -453,6 +487,12 @@ body {
 	background-color: #0F1615;
 	padding-top: 55px;
 	padding-bottom: 63px;
+	.row {
+		@media screen and (max-width: 575px) {
+			margin-right: 40px;
+			margin-left: 40px;
+		}
+	}
 	h2 {
 		font-size: 2rem;
 		line-height: 3rem;
@@ -461,6 +501,13 @@ body {
 	}
 	.team-member {
 		width: 223px;
+		@media screen and (max-width: 575px) {
+			width: 100%;
+			margin-bottom: 30px;
+		}
+		img {
+			max-width: 100%;
+		}
 		h5 {
 			margin-top: 11px;
 			font-size: 17px;
@@ -562,28 +609,48 @@ body {
 .footer {
 	padding-top: 70px;
 	padding-bottom: 70px;
-	background-color: #1C2423 ;
+	background-color: #1C2423;
+	.footer-logo {
+		@media screen and (max-width: 767px) {
+			margin-bottom: 35px;
+		}
+	}
 	hr {
 		border: 1px solid #969696;
 	}
-	ul {
-		li {
-			padding: 0px 16px;
-			a {
-				text-decoration: none;
-				color: white;
-				font-size: 15px;
-				line-height: 23px;
-				letter-spacing: 0.75px;
-				@media screen and (max-width: 991px) {
-					font-size: 13px;
-					line-height: 20px;
-					letter-spacing: 0.65px;
+	.footer-links {
+		justify-content: flex-end;
+		@media screen and (max-width: 767px) {
+			justify-content: center;
+		}
+		
+		ul {
+			@media screen and (max-width: 575px){
+				width: 100%;
+				display: flex;
+				justify-content: space-between;
+			}
+			li {
+				padding: 0px 16px;
+				@media screen and (max-width: 575px) {
+					padding: 0 0;
+				}
+				a {
+					text-decoration: none;
+					color: white;
+					font-size: 15px;
+					line-height: 23px;
+					letter-spacing: 0.75px;
+					@media screen and (max-width: 991px) {
+						font-size: 13px;
+						line-height: 20px;
+						letter-spacing: 0.65px;
+					}
 				}
 			}
 		}
 	}
-	.footer-right {
+	.footer-left {
 		margin-top: 70px;
 		font-size: 15px;
 		line-height: 29px;
@@ -592,21 +659,29 @@ body {
 				height: 20px;
 			}
 		}
+		ul {
+			li {
+				padding: 0px 16px;
+			}
+		}
 	}
 }
 
 .modal-dialog {
 	.modal-content {
     border-radius: 5px;
-    box-shadow: 1px 1px 1px #bd4f0d;
-    background: #ec7227;
+    box-shadow: 1px 1px 1px #3a3634;
+    background: #4B4B4B;
 		.modal-header {
 			display: flex;
 			justify-content: center;
 			position: relative;
+			.modal-title {
+				font-weight: 600;
+			}
 			.close {
 				border: none;
-				font-size: 36px;
+				font-size: 50px;
 				background: transparent;
 				color: #fff;
 				position: absolute;
@@ -622,19 +697,43 @@ body {
 			align-items: center;
 			.mint-number {
 				display: flex;
-				padding-left: 50px;
-				padding-right: 50px;
+				padding-left: 80px;
+				padding-right: 80px;
 				justify-content: space-between;
 				font-size: 56px;
 				width: 100%;
 				button {
+					font-size: 50px;
 					border: none;
-					background: transparent;
-					color: #fff;
+					background: #fff;
+					color: #6FA456;
+					border-radius: 50%;
+					width: 50px;
+					height: 50px;
+					position: relative;
+					span {
+						position: absolute;
+						width: 50px;
+						height: 50px;
+						top: -10px;
+						left: 1px;
+					}
 				}
 				label {
 					color: #fff;
+					margin-bottom: 0;
+					font-size: 50px;
 				}
+			}
+		}
+		.modal-footer {
+			display: flex;
+			justify-content: center;
+			button {
+				border-radius: 35px;
+				background-color: #fff;
+				color: #6FA456;
+				font-weight: 600;
 			}
 		}
 	}

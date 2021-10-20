@@ -1848,7 +1848,6 @@ contract GEVOLS is ERC721Burnable, Ownable {
     uint256 constant public REVEAL_TIMESTAMP = 0;
     uint256 constant public MAX_PER_TX = 10;
     uint256 constant public MAX_MINT_WHITELIST = 20;
-    uint256 constant public MAX_CLAIM = 25;
     uint256 public startingIndex;
     uint256 public startingIndexBlock;
 
@@ -1922,9 +1921,8 @@ contract GEVOLS is ERC721Burnable, Ownable {
     }
 
     function claimFreeMints(uint numberOfTokens) public {
-        // require(isWhitelisted(msg.sender), "Is not whitelisted");
-        require(numberOfTokens <= MAX_CLAIM, "Above max tx count");
-        require(saleIsActive, "Sale must be active to mint");
+        require(isWhitelisted(msg.sender), "Is not whitelisted");
+        require(privateSaleIsActive, "Presale must be active to mint");
         require(totalSupply().add(numberOfTokens) <= TOTAL_SUPPLY, "Exceeds max supply");
         require(whitelist[msg.sender].claimAmount > 0, "You have no amount to claim");
         require(numberOfTokens <= whitelist[msg.sender].claimAmount, "You have no amount to claim");

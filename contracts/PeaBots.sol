@@ -14,17 +14,16 @@ contract PeaBots is ERC721Enumerable, Ownable, ERC721Burnable {
 
     Counters.Counter private _tokenIdTracker;
 
-    uint256 public constant MAX_ELEMENTS = 10000;
-    uint256 public constant PRICE = 8 * 10**16;
+    uint256 public constant MAX_ELEMENTS = 40;
     uint256 public constant MAX_BY_MINT = 5;
-    uint256 constant public MAX_MINT_WHITELIST = 20;
+    uint256 constant public MAX_MINT_WHITELIST = 10;
     uint256 constant public REVEAL_TIMESTAMP = 0;
-    uint256 constant public MAX_CLAIM = 25;
 
     string public baseTokenURI;
-    bool private _pause;
+    uint256 public mintPrice = 0.08 ether;
     uint256 public startingIndex;
     uint256 public startingIndexBlock;
+    
 
     struct Whitelist {
         address addr;
@@ -34,80 +33,60 @@ contract PeaBots is ERC721Enumerable, Ownable, ERC721Burnable {
     mapping(address => Whitelist) public whitelist;
     
     address[] whitelistAddr;
-    address payable claimEthAddress = payable(0x2B12055415cCD0478dEf607F792666c2ec4a892b);
 
     bool public saleIsActive = false;
     bool public privateSaleIsActive = true;
 
-    constructor(string memory baseURI, address[] memory addrs, uint[] memory claimAmounts) ERC721("PeaBots", "PEABOT") {
+    constructor(address[] memory addrs, uint[] memory claimAmounts) ERC721("PeaBots", "PEABOT") {
         whitelistAddr = addrs;
         for(uint i = 0; i < whitelistAddr.length; i++) {
             addAddressToWhitelist(whitelistAddr[i], claimAmounts[i]);
         }
-        setBaseURI(baseURI);
-        pause(true);
     }
 
-    modifier saleIsOpen {
-        require(_totalSupply() <= MAX_ELEMENTS, "Sale end");
-        if (_msgSender() != owner()) {
-            require(!_pause, "Pausable: paused");
-        }
-        _;
-    }
     function _totalSupply() internal view returns (uint) {
         return _tokenIdTracker.current();
     }
     function totalMint() public view returns (uint256) {
         return _totalSupply();
     }
-    function mint(address _to, uint256 _count) public payable saleIsOpen {
+
+    function mint(uint256 _count) public payable {
         uint256 total = _totalSupply();
         require(saleIsActive, "Sale must be active to mint");
-        require(total + _count <= MAX_ELEMENTS, "Max limit");
+        require(total.add(_count) <= MAX_ELEMENTS, "Max limit");
         require(total <= MAX_ELEMENTS, "Sale end");
-        require(_count <= MAX_BY_MINT, "Exceeds number");
+        require(_count <= MAX_BY_MINT, "Exceeds maximum number of mintable tokens at a time");
         require(msg.value >= price(_count), "Value below price");
 
-        if(privateSaleIsActive) {
-            require(_count <= MAX_MINT_WHITELIST, "Above max tx count");
-            require(isWhitelisted(msg.sender), "Is not whitelisted");
-            require(whitelist[msg.sender].hasMinted.add(_count) <= MAX_MINT_WHITELIST, "Can only mint 20 while whitelisted");
-            require(whitelist[msg.sender].hasMinted <= MAX_MINT_WHITELIST, "Can only mint 20 while whitelisted");
-            whitelist[msg.sender].hasMinted = whitelist[msg.sender].hasMinted.add(_count);
-        } else {
-            require(_count <= MAX_BY_MINT, "Above max tx count");
-        }
-
         for (uint256 i = 0; i < _count; i++) {
-            _mintAnElement(_to);
+            _mintAnElement(msg.sender);
         }
 
         // If we haven't set the starting index and this is either
         // 1) the last saleable token or
         // 2) the first token to be sold after the end of pre-sale, set the starting index block
-        if (startingIndexBlock == 0 && (totalSupply() == MAX_ELEMENTS || block.timestamp >= REVEAL_TIMESTAMP)) {
+        if (startingIndexBlock == 0 && (_totalSupply() == MAX_ELEMENTS || block.timestamp >= REVEAL_TIMESTAMP)) {
             startingIndexBlock = block.number;
         }
     }
 
-    function claimFreeMints(address _to, uint _count) public {
-        // require(isWhitelisted(msg.sender), "Is not whitelisted");
-        require(_count <= MAX_CLAIM, "Above max tx count");
-        require(saleIsActive, "Sale must be active to mint");
-        require(totalSupply().add(_count) <= MAX_ELEMENTS, "Exceeds max supply");
+    function freeMint(uint _count) public {
+        require(isWhitelisted(msg.sender), "Is not whitelisted");
+        require(privateSaleIsActive, "Presale must be active to mint");
+        require(_totalSupply().add(_count) <= MAX_ELEMENTS, "Exceeds max supply");
         require(whitelist[msg.sender].claimAmount > 0, "You have no amount to claim");
-        require(_count <= whitelist[msg.sender].claimAmount, "You have no amount to claim");
+        require(_count <= whitelist[msg.sender].claimAmount, "You claim amount exceeded");
 
         for(uint i = 0; i < _count; i++) {
-            _mintAnElement(_to);
+            _mintAnElement(msg.sender);
         }
         whitelist[msg.sender].claimAmount = whitelist[msg.sender].claimAmount.sub(_count);
         
         // If we haven't set the starting index and this is either
         // 1) the last saleable token or
         // 2) the first token to be sold after the end of pre-sale, set the starting index block
-        if (startingIndexBlock == 0 && (totalSupply() == MAX_ELEMENTS || block.timestamp >= REVEAL_TIMESTAMP)) {
+        if (startingIndexBlock == 0 && (_totalSupply() == MAX_ELEMENTS || block.timestamp >= REVEAL_TIMESTAMP)) {
             startingIndexBlock = block.number;
         }
     }
@@ -125,9 +104,17 @@ contract PeaBots is ERC721Enumerable, Ownable, ERC721Burnable {
         }
     }
 
-    function claimETH() public {
-        require(claimEthAddress == _msgSender(), "Ownable: caller is not the claimEthAddress");
-        payable(address(claimEthAddress)).transfer(address(this).balance);
+    function withdraw() public onlyOwner {
+        uint256 balance = address(this).balance;
+        (bool success, ) = msg.sender.call{value: balance}("");
+        require(success);
+    }
+
+    function partialWithdraw(uint256 _amount, address payable _to) external onlyOwner {
+        require(_amount > 0, "Withdraw must be greater than 0");
+        require(_amount <= address(this).balance, "Amount too high");
+        (bool success, ) = _to.call{value: _amount}("");
+        require(success);
     }
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
@@ -141,10 +128,15 @@ contract PeaBots is ERC721Enumerable, Ownable, ERC721Burnable {
     function _mintAnElement(address _to) private {
         uint id = _totalSupply();
         _tokenIdTracker.increment();
-        _safeMint(_to, id + 1);
+        _safeMint(_to, id);
     }
-    function price(uint256 _count) public pure returns (uint256) {
-        return PRICE.mul(_count);
+
+    function price(uint256 _count) public view returns (uint256) {
+        return mintPrice.mul(_count);
+    }
+
+    function setMintPrice(uint256 _price) external onlyOwner {
+        mintPrice = _price;
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
@@ -163,21 +155,6 @@ contract PeaBots is ERC721Enumerable, Ownable, ERC721Burnable {
         privateSaleIsActive = !privateSaleIsActive;
     }
 
-    function walletOfOwner(address _owner) external view returns (uint256[] memory) {
-        uint256 tokenCount = balanceOf(_owner);
-
-        uint256[] memory tokensId = new uint256[](tokenCount);
-        for (uint256 i = 0; i < tokenCount; i++) {
-            tokensId[i] = tokenOfOwnerByIndex(_owner, i);
-        }
-
-        return tokensId;
-    }
-
-    function pause(bool val) public onlyOwner {
-        _pause = val;
-    }
-
     function _beforeTokenTransfer(
         address from,
         address to,
@@ -194,7 +171,7 @@ contract PeaBots is ERC721Enumerable, Ownable, ERC721Burnable {
         uint256 total = _totalSupply();
         require(total + _count <= 100, "Exceeded");
         for (uint256 i = 0; i < _count; i++) {
-            _mintAnElement(_msgSender());
+            _mintAnElement(msg.sender);
         }
     }
     
