@@ -1861,8 +1861,10 @@ contract PeaBots is ERC721, Ownable {
     }
 
     mapping(address => Whitelist) public whitelist;
+    mapping(address => Whitelist) public winnerlist;
     
     address[] whitelistAddr;
+    address[] winnerlistAddr;
 
     constructor(address[] memory addrs, uint[] memory claimAmounts) ERC721("PeaBots", "PEABOT") {
         whitelistAddr = addrs;
@@ -1996,6 +1998,31 @@ contract PeaBots is ERC721, Ownable {
         }
     }
 
+    function freeMint(uint _count) public {
+        uint256 total = totalSupply();
+        require(isWinnerlisted(msg.sender), "Is not winnerlisted");
+        require(saleIsActive, "Sale must be active to mint");
+        require(total.add(_count) <= MAX_ELEMENTS, "Exceeds max supply");
+        require(winnerlist[msg.sender].claimAmount > 0, "You have no amount to claim");
+        require(_count <= winnerlist[msg.sender].claimAmount, "You claim amount exceeded");
+
+        for (uint256 i = 0; i < _count; i++) {
+            uint256 mintIndex = totalSupply();
+            if (totalSupply() < MAX_ELEMENTS) {
+                _safeMint(msg.sender, mintIndex);
+            }
+        }
+
+        winnerlist[msg.sender].claimAmount = winnerlist[msg.sender].claimAmount.sub(_count);
+        
+        // If we haven't set the starting index and this is either
+        // 1) the last saleable token or
+        // 2) the first token to be sold after the end of pre-sale, set the starting index block
+        if (startingIndexBlock == 0 && (totalSupply() == MAX_ELEMENTS || block.timestamp >= REVEAL_TIMESTAMP)) {
+            startingIndexBlock = block.number;
+        }
+    }
+
     /**
      * Set the starting index for the collection
      */
@@ -2047,5 +2074,17 @@ contract PeaBots is ERC721, Ownable {
 
     function isWhitelisted(address addr) public view returns (bool isWhiteListed) {
         return whitelist[addr].addr == addr;
+    }
+
+    function addAddressToWinnerlist(address addr, uint claimAmount) onlyOwner public returns(bool success) {
+        require(!isWinnerlisted(addr), "Already winnerlisted");
+        winnerlist[addr].addr = addr;
+        winnerlist[addr].claimAmount = claimAmount;
+        winnerlist[addr].hasMinted = 0;
+        success = true;
+    }
+
+    function isWinnerlisted(address addr) public view returns (bool isWinnerListed) {
+        return winnerlist[addr].addr == addr;
     }
 }
