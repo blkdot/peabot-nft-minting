@@ -105,8 +105,10 @@ body {
 		}
 	}
 	.navbar-brand {
-		img {
-			width: 65px;
+			@media screen and (max-width: 767px)  {
+			img {
+				width: 85px;
+			}
 		}
 	}
 }
@@ -300,6 +302,7 @@ body {
 		padding-bottom: 40px;
 	}
 	img {
+		width: 350px;
 		@media screen and (max-width: 991px) {
 			width: 300px;
 		}
@@ -354,7 +357,7 @@ body {
 }
 
 #specs {
-	margin-top: -30px;
+	margin-top: -20px;
 	padding-top: 56px;
 	padding-bottom: 118px;
 	background-color: #0F1615;

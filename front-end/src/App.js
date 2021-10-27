@@ -177,7 +177,7 @@ function App() {
 
       const _totalSupply = await nfPeabotContract.methods.totalSupply().call()
       nfPeabotContract.methods
-        .mint(walletAddress, numberofTokens)
+        .mint(numberofTokens)
         .send({from: walletAddress, value: price, gas: String(gasAmount)})
         .on('transactionHash', function(hash){
           console.log("transactionHash", hash)
@@ -245,14 +245,14 @@ function App() {
                       </NavLink>
                     </NavItem>
                   </div>
-                  {/* <NavItem className="wallet-connect-btn">
+                  <NavItem className="wallet-connect-btn">
                     {!signedIn ? <Button size="sm" onClick={connectMetamask}>CONNECT WALLET</Button>
                     :
                     <Button size="sm" onClick={disconnectMetamask}>DISCONNECT WALLET</Button>}
-                  </NavItem> */}
-                  <NavItem className="wallet-connect-btn">
-                    <Button size="sm">COMING SOON</Button>
                   </NavItem>
+                  {/* <NavItem className="wallet-connect-btn">
+                    <Button size="sm">COMING SOON</Button>
+                  </NavItem> */}
                 </div>
               </Nav>
             </Collapse>
@@ -269,8 +269,8 @@ function App() {
                 <p>A collection of 10,000 unique PeaBots, forever dreaming of living like humans.</p>
               </div>
               <div className="d-flex align-items-center">
-                {/* <Button size="sm" onClick={handleShow}>MINT</Button> */}
-                <Button size="sm">COMING SOON</Button>
+                <Button size="sm" onClick={handleShow}>MINT</Button>
+                {/* <Button size="sm">COMING SOON</Button> */}
               </div>
             </div>
             <div className="banner-img">
@@ -303,7 +303,7 @@ function App() {
         <Container>
           <Row>
             <Col lg={6} md={6} sm={12}>
-              <img src="/images/PeaBots_5.png" alt="" />
+              <img src="/images/community_peabot.png" alt="" />
             </Col>
             <Col lg={6} md={6} sm={12}>
               <div className="community-title">
@@ -484,7 +484,7 @@ function App() {
                 <img src="/images/3.jpg" alt="" />
                 <h5>Toldo</h5>
                 <div className="d-flex justify-content-between align-items-start">
-                  <p>Tech & Dev</p>
+                  <p>Tech / Founder</p>
                   {/* eslint-disable-next-line */}
                   <a href="https://twitter.com/Toldo001" title="Twitter" target="_blank">
                     <img src="/images/dove.svg" alt="" />

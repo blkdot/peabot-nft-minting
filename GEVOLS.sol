@@ -1,32 +1,37 @@
 /**
- *Submitted for verification at Etherscan.io on 2021-09-01
+ *Submitted for verification at Etherscan.io on 2021-07-12
 */
 
-// SPDX-License-Identifier: AGPL-3.0-or-later
-pragma solidity ^0.6.8;
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+
+// File: @openzeppelin/contracts/utils/Context.sol
 
 /*
  * @dev Provides information about the current execution context, including the
  * sender of the transaction and its data. While these are generally available
  * via msg.sender and msg.data, they should not be accessed in such a direct
- * manner, since when dealing with GSN meta-transactions the account sending and
+ * manner, since when dealing with meta-transactions the account sending and
  * paying for execution may not be the actual sender (as far as an application
  * is concerned).
  *
  * This contract is only required for intermediate, library-like contracts.
  */
 abstract contract Context {
-    function _msgSender() internal view virtual returns (address payable) {
+    function _msgSender() internal view virtual returns (address) {
         return msg.sender;
     }
 
-    function _msgData() internal view virtual returns (bytes memory) {
+    function _msgData() internal view virtual returns (bytes calldata) {
         this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
         return msg.data;
     }
 }
 
-// File @openzeppelin/contracts/introspection/IERC165.sol@v3.4.0
+
+// File: @openzeppelin/contracts/introspection/IERC165.sol
 
 /**
  * @dev Interface of the ERC165 standard, as defined in the
@@ -50,7 +55,7 @@ interface IERC165 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/IERC721.sol@v3.4.0
+// File: @openzeppelin/contracts/token/ERC721/IERC721.sol
 
 /**
  * @dev Required interface of an ERC721 compliant contract.
@@ -176,14 +181,14 @@ interface IERC721 is IERC165 {
     function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;
 }
 
-// File @openzeppelin/contracts/token/ERC721/IERC721Metadata.sol@v3.4.0
+
+// File: @openzeppelin/contracts/token/ERC721/IERC721Metadata.sol
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional metadata extension
  * @dev See https://eips.ethereum.org/EIPS/eip-721
  */
 interface IERC721Metadata is IERC721 {
-
     /**
      * @dev Returns the token collection name.
      */
@@ -200,14 +205,14 @@ interface IERC721Metadata is IERC721 {
     function tokenURI(uint256 tokenId) external view returns (string memory);
 }
 
-// File @openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol@v3.4.0
+
+// File: @openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional enumeration extension
  * @dev See https://eips.ethereum.org/EIPS/eip-721
  */
 interface IERC721Enumerable is IERC721 {
-
     /**
      * @dev Returns the total amount of tokens stored by the contract.
      */
@@ -226,7 +231,8 @@ interface IERC721Enumerable is IERC721 {
     function tokenByIndex(uint256 index) external view returns (uint256);
 }
 
-// File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v3.4.0
+
+// File: @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol
 
 /**
  * @title ERC721 token receiver interface
@@ -246,7 +252,8 @@ interface IERC721Receiver {
     function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data) external returns (bytes4);
 }
 
-// File @openzeppelin/contracts/introspection/ERC165.sol@v3.4.0
+
+// File: @openzeppelin/contracts/introspection/ERC165.sol
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -265,7 +272,7 @@ abstract contract ERC165 is IERC165 {
      */
     mapping(bytes4 => bool) private _supportedInterfaces;
 
-    constructor () internal {
+    constructor () {
         // Derived contracts need only register support for their own interfaces,
         // we register support for ERC165 itself here
         _registerInterface(_INTERFACE_ID_ERC165);
@@ -298,7 +305,7 @@ abstract contract ERC165 is IERC165 {
 }
 
 
-// File @openzeppelin/contracts/math/SafeMath.sol@v3.4.0
+// File: @openzeppelin/contracts/math/SafeMath.sol
 
 /**
  * @dev Wrappers over Solidity's arithmetic operations with added overflow
@@ -512,7 +519,7 @@ library SafeMath {
 }
 
 
-// File @openzeppelin/contracts/utils/Address.sol@v3.4.0
+// File: @openzeppelin/contracts/utils/Address.sol
 
 /**
  * @dev Collection of functions related to the address type
@@ -701,7 +708,7 @@ library Address {
 }
 
 
-// File @openzeppelin/contracts/utils/EnumerableSet.sol@v3.4.0
+// File: @openzeppelin/contracts/utils/EnumerableSet.sol
 
 /**
  * @dev Library for managing
@@ -941,7 +948,6 @@ library EnumerableSet {
         return address(uint160(uint256(_at(set._inner, index))));
     }
 
-
     // UintSet
 
     struct UintSet {
@@ -997,7 +1003,8 @@ library EnumerableSet {
     }
 }
 
-// File @openzeppelin/contracts/utils/EnumerableMap.sol@v3.4.0
+
+// File: @openzeppelin/contracts/utils/EnumerableMap.sol
 
 /**
  * @dev Library for managing an enumerable variant of Solidity's
@@ -1262,7 +1269,8 @@ library EnumerableMap {
     }
 }
 
-// File @openzeppelin/contracts/utils/Strings.sol@v3.4.0
+
+// File: @openzeppelin/contracts/utils/Strings.sol
 
 /**
  * @dev String operations.
@@ -1295,7 +1303,8 @@ library Strings {
     }
 }
 
-// File @openzeppelin/contracts/token/ERC721/ERC721.sol@v3.4.0
+
+// File: @openzeppelin/contracts/token/ERC721/ERC721.sol
 
 /**
  * @title ERC721 Non-Fungible Token Standard basic implementation
@@ -1373,7 +1382,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
      */
-    constructor (string memory name_, string memory symbol_) public {
+    constructor (string memory name_, string memory symbol_) {
         _name = name_;
         _symbol = symbol_;
 
@@ -1416,6 +1425,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
      * @dev See {IERC721Metadata-tokenURI}.
      */
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
         string memory _tokenURI = _tokenURIs[tokenId];
         string memory base = baseURI();
 
@@ -1730,7 +1741,12 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
         return (retval == _ERC721_RECEIVED);
     }
 
-    function _approve(address to, uint256 tokenId) private {
+    /**
+     * @dev Approve `to` to operate on `tokenId`
+     *
+     * Emits an {Approval} event.
+     */
+    function _approve(address to, uint256 tokenId) internal virtual {
         _tokenApprovals[tokenId] = to;
         emit Approval(ERC721.ownerOf(tokenId), to, tokenId); // internal owner
     }
@@ -1753,28 +1769,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal virtual { }
 }
 
-// File @openzeppelin/contracts/token/ERC721/ERC721Burnable.sol@v3.4.0
 
-/**
- * @title ERC721 Burnable Token
- * @dev ERC721 Token that can be irreversibly burned (destroyed).
- */
-abstract contract ERC721Burnable is Context, ERC721 {
-    /**
-     * @dev Burns `tokenId`. See {ERC721-_burn}.
-     *
-     * Requirements:
-     *
-     * - The caller must own `tokenId` or be an approved operator.
-     */
-    function burn(uint256 tokenId) public virtual {
-        //solhint-disable-next-line max-line-length
-        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721Burnable: caller is not owner nor approved");
-        _burn(tokenId);
-    }
-}
-
-// File @openzeppelin/contracts/access/Ownable.sol@v3.4.0
+// File: @openzeppelin/contracts/access/Ownable.sol
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -1796,7 +1792,7 @@ abstract contract Ownable is Context {
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
      */
-    constructor () internal {
+    constructor () {
         address msgSender = _msgSender();
         _owner = msgSender;
         emit OwnershipTransferred(address(0), msgSender);
@@ -1840,146 +1836,170 @@ abstract contract Ownable is Context {
     }
 }
 
-// File contracts/GEVOLS.sol
 
-contract GEVOLS is ERC721Burnable, Ownable {
-    uint256 constant public PRICE = 0.1 ether;
-    uint256 constant public TOTAL_SUPPLY = 8888;
-    uint256 constant public REVEAL_TIMESTAMP = 0;
-    uint256 constant public MAX_PER_TX = 10;
-    uint256 constant public MAX_MINT_WHITELIST = 20;
-    uint256 public startingIndex;
+// File: contracts/TheDogePound.sol
+
+/**
+ * @title TheDogePound contract
+ * @dev Extends ERC721 Non-Fungible Token Standard basic implementation
+ */
+contract TheDogePound is ERC721, Ownable {
+    using SafeMath for uint256;
+
     uint256 public startingIndexBlock;
+    uint256 public startingIndex;
+    uint256 public mintPrice;
+    uint256 public maxToMint;
+    uint256 public MAX_DOGE_SUPPLY;
+    uint256 public REVEAL_TIMESTAMP;
 
-    struct Whitelist {
-        address addr;
-        uint claimAmount;
-        uint hasMinted;
+    string public PROVENANCE_HASH = "";
+    bool public saleIsActive;
+
+    address wallet1;
+    address wallet2;
+
+    constructor() ERC721("The Doge Pound", "DOGGY") {
+        MAX_DOGE_SUPPLY = 10000;
+        REVEAL_TIMESTAMP = block.timestamp + (86400 * 7);
+        mintPrice = 69000000000000000; // 0.069 ETH
+        maxToMint = 30;
+        saleIsActive = false;
+        wallet1 = 0xbb683E735ca23fDb9Ba6F22F3608bf5eD20B845f;
+        wallet2 = 0x1097F467E199018e1F2E506cb646431E863C417f;
     }
-    mapping(address => Whitelist) public whitelist;
-    
-    address[] whitelistAddr;
-    address payable claimEthAddress = 0x732f325Ac043D87b9376A84785B51e543c96709d; // multisig
 
-    bool public saleIsActive = false;
-    bool public privateSaleIsActive = true;
-
-    constructor(address[] memory addrs, uint[] memory claimAmounts) public ERC721("G’EVOLs", "GEVOLs") {
-        whitelistAddr = addrs;
-        for(uint i = 0; i < whitelistAddr.length; i++) {
-            addAddressToWhitelist(whitelistAddr[i], claimAmounts[i]);
+    /**
+     * Get the array of token for owner.
+     */
+    function tokensOfOwner(address _owner) external view returns(uint256[] memory) {
+        uint256 tokenCount = balanceOf(_owner);
+        if (tokenCount == 0) {
+            return new uint256[](0);
+        } else {
+            uint256[] memory result = new uint256[](tokenCount);
+            for (uint256 index; index < tokenCount; index++) {
+                result[index] = tokenOfOwnerByIndex(_owner, index);
+            }
+            return result;
         }
+    }
 
+    /**
+     * Check if certain token id is exists.
+     */
+    function exists(uint256 _tokenId) public view returns (bool) {
+        return _exists(_tokenId);
+    }
+
+    /**
+     * Set price to mint a Doge.
+     */
+    function setMintPrice(uint256 _price) external onlyOwner {
+        mintPrice = _price;
+    }
+
+    /**
+     * Set maximum count to mint per once.
+     */
+    function setMaxToMint(uint256 _maxValue) external onlyOwner {
+        maxToMint = _maxValue;
+    }
+
+    /**
+     * Mint Doges by owner
+     */
+    function reserveDoges(address _to, uint256 _numberOfTokens) external onlyOwner {
+        require(_to != address(0), "Invalid address to reserve.");
+        uint256 supply = totalSupply();
+        uint256 i;
         
-    }
-
-    function reserveGEVOLS(address addr, uint256 amount) public onlyOwner {
-        uint supply = totalSupply();
-        uint i;
-        for (i = 0; i < amount; i++) {
-            _safeMint(addr, supply + i);
+        for (i = 0; i < _numberOfTokens; i++) {
+            _safeMint(_to, supply + i);
         }
     }
 
-    function setBaseURI(string memory baseURI) public onlyOwner {
+    /**
+     * Set reveal timestamp when finished the sale.
+     */
+    function setRevealTimestamp(uint256 _revealTimeStamp) external onlyOwner {
+        REVEAL_TIMESTAMP = _revealTimeStamp;
+    } 
+
+    /*     
+    * Set provenance once it's calculated
+    */
+    function setProvenanceHash(string memory _provenanceHash) external onlyOwner {
+        PROVENANCE_HASH = _provenanceHash;
+    }
+
+    function setBaseURI(string memory baseURI) external onlyOwner {
         _setBaseURI(baseURI);
     }
 
-    function flipSaleState() public onlyOwner {
+    /*
+    * Pause sale if active, make active if paused
+    */
+    function setSaleState() external onlyOwner {
         saleIsActive = !saleIsActive;
     }
 
-    function flipPrivateSaleState() public onlyOwner {
-        privateSaleIsActive = !privateSaleIsActive;
-    }
-
-    function mintGEVOLS(uint numberOfTokens) public payable {
+    /**
+    * Mints tokens
+    */
+    function mintDoges(uint256 numberOfTokens) external payable {
         require(saleIsActive, "Sale must be active to mint");
-        require(totalSupply().add(numberOfTokens) <= TOTAL_SUPPLY, "Exceeds max supply");
-        require(PRICE.mul(numberOfTokens) <= msg.value, "ETH sent is incorrect");
-        if(privateSaleIsActive) {
-            require(numberOfTokens <= MAX_MINT_WHITELIST, "Above max tx count");
-            require(isWhitelisted(msg.sender), "Is not whitelisted");
-            require(whitelist[msg.sender].hasMinted.add(numberOfTokens) <= MAX_MINT_WHITELIST, "Can only mint 20 while whitelisted");
-            require(whitelist[msg.sender].hasMinted <= MAX_MINT_WHITELIST, "Can only mint 20 while whitelisted");
-            whitelist[msg.sender].hasMinted = whitelist[msg.sender].hasMinted.add(numberOfTokens);
-        } else {
-            require(numberOfTokens <= MAX_PER_TX, "Above max tx count");
-        }
-
-        for(uint i = 0; i < numberOfTokens; i++) {
-            uint mintIndex = totalSupply();
-            _safeMint(msg.sender, mintIndex);
-        }
+        require(numberOfTokens <= maxToMint, "Invalid amount to mint per once");
+        require(totalSupply().add(numberOfTokens) <= MAX_DOGE_SUPPLY, "Purchase would exceed max supply");
+        require(mintPrice.mul(numberOfTokens) <= msg.value, "Ether value sent is not correct");
         
-        // If we haven't set the starting index and this is either
-        // 1) the last saleable token or
-        // 2) the first token to be sold after the end of pre-sale, set the starting index block
-        if (startingIndexBlock == 0 && (totalSupply() == TOTAL_SUPPLY || block.timestamp >= REVEAL_TIMESTAMP)) {
-            startingIndexBlock = block.number;
+        for(uint256 i = 0; i < numberOfTokens; i++) {
+            uint256 mintIndex = totalSupply();
+            if (totalSupply() < MAX_DOGE_SUPPLY) {
+                _safeMint(msg.sender, mintIndex);
+            }
         }
-    }
 
-    function claimFreeMints(uint numberOfTokens) public {
-        require(isWhitelisted(msg.sender), "Is not whitelisted");
-        require(privateSaleIsActive, "Presale must be active to mint");
-        require(totalSupply().add(numberOfTokens) <= TOTAL_SUPPLY, "Exceeds max supply");
-        require(whitelist[msg.sender].claimAmount > 0, "You have no amount to claim");
-        require(numberOfTokens <= whitelist[msg.sender].claimAmount, "You have no amount to claim");
-
-        for(uint i = 0; i < numberOfTokens; i++) {
-            uint mintIndex = totalSupply();
-            _safeMint(msg.sender, mintIndex);
-        }
-        whitelist[msg.sender].claimAmount = whitelist[msg.sender].claimAmount.sub(numberOfTokens);
-        
         // If we haven't set the starting index and this is either
-        // 1) the last saleable token or
-        // 2) the first token to be sold after the end of pre-sale, set the starting index block
-        if (startingIndexBlock == 0 && (totalSupply() == TOTAL_SUPPLY || block.timestamp >= REVEAL_TIMESTAMP)) {
+        // 1) the last saleable token or 2) the first token to be sold after
+        // the end of pre-sale, set the starting index block
+        if (startingIndexBlock == 0 && (totalSupply() == MAX_DOGE_SUPPLY || block.timestamp >= REVEAL_TIMESTAMP)) {
             startingIndexBlock = block.number;
-        }
+        } 
     }
 
     /**
-    * Set the starting index for the collection
-    */
-    function setStartingIndex() public onlyOwner {
+     * Set the starting index for the collection
+     */
+    function setStartingIndex() external {
         require(startingIndex == 0, "Starting index is already set");
         require(startingIndexBlock != 0, "Starting index block must be set");
-        startingIndex = uint(blockhash(startingIndexBlock)) % TOTAL_SUPPLY;
+        
+        startingIndex = uint256(blockhash(startingIndexBlock)) % MAX_DOGE_SUPPLY;
         // Just a sanity case in the worst case if this function is called late (EVM only stores last 256 block hashes)
         if (block.number.sub(startingIndexBlock) > 255) {
-            startingIndex = uint(blockhash(block.number - 1)) % TOTAL_SUPPLY;
+            startingIndex = uint256(blockhash(block.number - 1)) % MAX_DOGE_SUPPLY;
         }
-    }
-
-    function claimETH() public {
-        require(claimEthAddress == _msgSender(), "Ownable: caller is not the claimEthAddress");
-        payable(address(claimEthAddress)).transfer(address(this).balance);
-    }
-
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        // Prevent default sequence
         if (startingIndex == 0) {
-            return super.tokenURI(0);
+            startingIndex = startingIndex.add(1);
         }
-        uint256 moddedId = (tokenId + startingIndex) % TOTAL_SUPPLY;
-        return super.tokenURI(moddedId);
     }
 
     /**
-    * @dev add an address to the whitelist
-    * @param addr address
-    */
-    function addAddressToWhitelist(address addr, uint claimAmount) onlyOwner public returns(bool success) {
-        require(!isWhitelisted(addr), "Already whitelisted");
-        whitelist[addr].addr = addr;
-        whitelist[addr].claimAmount = claimAmount;
-        whitelist[addr].hasMinted = 0;
-        success = true;
+     * Set the starting index block for the collection, essentially unblocking
+     * setting starting index
+     */
+    function emergencySetStartingIndexBlock() external onlyOwner {
+        require(startingIndex == 0, "Starting index is already set");
+        
+        startingIndexBlock = block.number;
     }
 
-    function isWhitelisted(address addr) public view returns (bool isWhiteListed) {
-        return whitelist[addr].addr == addr;
+    function withdraw() external onlyOwner {
+        uint256 balance = address(this).balance;
+        uint256 walletBalance = balance.mul(50).div(100);
+        payable(wallet1).transfer(walletBalance);
+        payable(wallet2).transfer(balance.sub(walletBalance));
     }
 }

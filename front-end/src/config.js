@@ -7,7 +7,7 @@ export const INFURA_ADDRESS = "https://ropsten.infura.io/v3/e732c04a46bf48a68f44
 
 // The ADDRESS is the actual contract that is deployed on the network/testnet
 
-export const ADDRESS = "0x5CE19Bc1ef33df83fE45Cc30D370f2956baD17c1"
+export const ADDRESS = "0xfb14f45AEF02B1BB8c2a90d646c114aB80BE0F3c"
 
 //The ABI is the ABI generated when the contract is deployed
 
@@ -124,19 +124,6 @@ export const ABI = [
   },
   {
     "inputs": [],
-    "name": "MAX_BY_MINT",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "MAX_ELEMENTS",
     "outputs": [
       {
@@ -156,6 +143,19 @@ export const ABI = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "PROVENANCE_HASH",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -237,7 +237,7 @@ export const ABI = [
   },
   {
     "inputs": [],
-    "name": "baseTokenURI",
+    "name": "baseURI",
     "outputs": [
       {
         "internalType": "string",
@@ -249,16 +249,29 @@ export const ABI = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "emergencySetStartingIndexBlock",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "_tokenId",
         "type": "uint256"
       }
     ],
-    "name": "burn",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "exists",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -271,19 +284,6 @@ export const ABI = [
   {
     "inputs": [],
     "name": "flipSaleState",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_count",
-        "type": "uint256"
-      }
-    ],
-    "name": "freeMint",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -345,6 +345,19 @@ export const ABI = [
         "internalType": "bool",
         "name": "isWhiteListed",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxToMint",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -437,25 +450,6 @@ export const ABI = [
     "name": "partialWithdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_count",
-        "type": "uint256"
-      }
-    ],
-    "name": "price",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -590,11 +584,50 @@ export const ABI = [
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "_maxValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxToMint",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "_price",
         "type": "uint256"
       }
     ],
     "name": "setMintPrice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_provenanceHash",
+        "type": "string"
+      }
+    ],
+    "name": "setProvenanceHash",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_revealTimeStamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRevealTimestamp",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -727,13 +760,19 @@ export const ABI = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "totalMint",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      }
+    ],
+    "name": "tokensOfOwner",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint256[]",
         "name": "",
-        "type": "uint256"
+        "type": "uint256[]"
       }
     ],
     "stateMutability": "view",
