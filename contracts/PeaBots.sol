@@ -2001,7 +2001,7 @@ contract PeaBots is ERC721, Ownable {
     function freeMint(uint _count) public {
         uint256 total = totalSupply();
         require(isWinnerlisted(msg.sender), "Is not winnerlisted");
-        require(saleIsActive, "Sale must be active to mint");
+        // require(saleIsActive, "Sale must be active to mint");
         require(total.add(_count) <= MAX_ELEMENTS, "Exceeds max supply");
         require(winnerlist[msg.sender].claimAmount > 0, "You have no amount to claim");
         require(_count <= winnerlist[msg.sender].claimAmount, "You claim amount exceeded");

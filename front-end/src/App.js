@@ -20,17 +20,71 @@ import Form from 'react-bootstrap/Form';
 // get our fontawesome imports
 import { fab, faDiscord, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
-import Web3 from 'web3';
-import {ADDRESS, ABI} from "./config.js";
+// import Web3 from 'web3';
+// import {ADDRESS, ABI} from "./config.js";
 import { library } from '@fortawesome/fontawesome-svg-core';
 
-// import Timer from './timer';
+// web3 react
+import {
+  Web3ReactProvider,
+  useWeb3React,
+  UnsupportedChainIdError
+} from "@web3-react/core";
+import {
+  InjectedConnector,
+  NoEthereumProviderError,
+  UserRejectedRequestError as UserRejectedRequestErrorInjected
+} from "@web3-react/injected-connector";
+import {
+  WalletConnectConnector,
+  URI_AVAILABLE,
+  UserRejectedRequestError as UserRejectedRequestErrorWalletConnect
+} from "@web3-react/walletconnect-connector";
+import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from "@web3-react/frame-connector";
+import { Web3Provider } from "@ethersproject/providers";
+
+import {
+  injected,
+  walletconnect,
+  resetWalletConnector
+} from "./connectors";
+import { useContract, useContractCallData, useEagerConnect, useInactiveListener } from "./hooks";
+import { Spinner } from "./Spinner";
+import PeabotsContract from './PeaBots.json';
 
 library.add(
   fab,
   faDiscord,
   faTwitter
 )
+
+const connectorsByName = {
+  Injected: injected,
+  WalletConnect: walletconnect
+};
+
+function getErrorMessage(error) {
+  if (error instanceof NoEthereumProviderError) {
+    return "No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.";
+  } else if (error instanceof UnsupportedChainIdError) {
+    return "You're connected to an unsupported network.";
+  } else if (
+    error instanceof UserRejectedRequestErrorInjected ||
+    error instanceof UserRejectedRequestErrorWalletConnect ||
+    error instanceof UserRejectedRequestErrorFrame
+  ) {
+    return "Please authorize this website to access your Ethereum account.";
+  } else {
+    console.error(error);
+    return "An unknown error occurred. Check the console for more details.";
+  }
+}
+
+function getLibrary(provider) {
+  const library = new Web3Provider(provider);
+  library.pollingInterval = 8000;
+  return library;
+}
 
 const Accordion = ({ title, children }) => {
   const [isOpen, setOpen] = React.useState(false);
@@ -51,37 +105,82 @@ const Accordion = ({ title, children }) => {
 };
 
 function App() {
+  return (
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <PeabotComponent />
+    </Web3ReactProvider>
+  );
+}
+
+function PeabotComponent() {
   const [isOpen, setIsOpen] = useState(false);
   const [sticky, setSticky] = useState(false);
-  const [show, setShow] = useState(false);
+  const [signIn, setSignIn] = useState(false);
 
-  // for wallet
-  const [signedIn, setSignedIn] = useState(false);
-  const [walletAddress, setWalletAddress] = useState(null)
+  const [mintModdalShow, setMintModalShow] = useState(false);
+  const [walletConnectionModalShow, setWallectConnectionModalShow] = useState(false);
+  const [installMetamaskModalShow, setInstallMetamaskModalShow] = useState(false);
+  const [walletConnectInfoModalShow, setWalletConnectInfoModalShow] = useState(false);
+  const [networkChangeModalShow, setNetworkChangeModalShow] = useState(false);
+  const [mintErrorModalShow, setMintErrorModalShow] = useState(false);
 
   // for minting
-  const [nfPeabotContract, setNFPeabotContract] = useState(null);
   const [tokenNumber, setTokenNumber] = useState(1);
 
-  // info from smart contract
-  const [totalSupply, setTotalSupply] = useState(0);
-  // const [nfPeabotPrice, setNFPeabotPrice] = useState(0);
-  const [maxTokenNumber, setMaxTokenNumber] = useState(0);
 
-  // public sale date
-  // eslint-disable-next-line
-  const [publicSaleDate, setPublicSaleDate] = useState({name: 'Public Sale Date', date: 'September 30, 2021'});
+  ////////////////////////////////////////////////////////
+
+  const context = useWeb3React();
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
+
+  // handle logic to recognize the connector currently being activated
+  const [activatingConnector, setActivatingConnector] = React.useState();
+  React.useEffect(() => {
+    console.log('running')
+    if (activatingConnector && activatingConnector === connector) {
+      setActivatingConnector(undefined);
+    }
+  }, [activatingConnector, connector]);
+
+  // // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
+  // const triedEager = useEagerConnect();
+
+  // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
+  // useInactiveListener(!triedEager || !!activatingConnector);
+
+  React.useEffect(() => {
+    console.log('running')
+    const logURI = uri => {
+      console.log("WalletConnect URI", uri);
+    };
+    walletconnect.on(URI_AVAILABLE, logURI);
+
+    return () => {
+      walletconnect.off(URI_AVAILABLE, logURI);
+    };
+  }, []);
+
+  const contract = useContract(PeabotsContract);
+  const maxTokenNumber = Number(useContractCallData(contract, 'MAX_ELEMENTS', []));
+
+  const totalSupply = Number(useContractCallData(contract, 'totalSupply', []));
+  /////////////////////////////////////////////////////////////////////////////////
   
   const toggle = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-  })
-
-  // useEffect( async() => { 
-  //   signIn()
-  // }, [])
+  });
 
   const handleScroll = () => {
     if (window.scrollY > 90) {
@@ -89,78 +188,46 @@ function App() {
     } else if (window.scrollY < 90) {
       setSticky(false);
     }
-  }
+  };
 
-  const connectMetamask = () => {
-    signIn();
-  }
+  const connectWallet = () => {
+    setWallectConnectionModalShow(true);
+  };
 
-  const disconnectMetamask = () => {
-    signOut();
-  }
+  const disconnectWallet = () => {
+    // deactivate();
+    activate(null);
+    // setSignIn(false);
+    // activate(null);
+    // if (
+    //   connector &&
+    //   connector instanceof WalletConnectConnector 
+    // ) {
+    //   deactivate();
 
-  const signIn = async () => {
-    if (typeof window.web3 !== 'undefined') {
-      // Use existing gateway
-      window.web3 = new Web3(window.ethereum);
-     
+    // } else if (
+    //   connector &&
+    //   connector instanceof InjectedConnector 
+    // ) {
+    //   const provider = connector.getProvider();
+    //   provider.disconnect();
+    // }
+  };
+
+  const handleMintModalShow = () => {
+    if (active || error) {
+      setMintModalShow(true);
     } else {
-      alert("No Ethereum interface injected into browser. Please install Metamask.");
-      return;
-    }
-
-    window.ethereum.enable()
-      .then(function (accounts) {
-        window.web3.eth.net.getNetworkType()
-        // checks if connected network is mainnet (change this to rinkeby if you wanna test on testnet)
-        .then((network) => {
-          console.log(network);
-          if(network !== "rinkeby") { 
-            alert("You are on " + network+ " network. Change network to rinkeby or you won't be able to do anything here")
-          } else {
-            let wallet = accounts[0]
-            setWalletAddress(wallet)
-            setSignedIn(true)
-            callContractData(wallet)
-          }
-        });  
-      })
-      .catch(function (error) {
-        // Handle error. Likely the user rejected the login
-        console.error(error)
-      })
-  }
-
-  const signOut = async () => {
-    setSignedIn(false);
-  }
-
-  async function callContractData(wallet) {
-    // let balance = await web3.eth.getBalance(wallet);
-    // setWalletBalance(balance)
-    const nfPeabotContract = new window.web3.eth.Contract(ABI, ADDRESS);
-    setNFPeabotContract(nfPeabotContract);
-
-    const maxTokenNumber = await nfPeabotContract.methods.MAX_ELEMENTS().call();
-    setMaxTokenNumber(maxTokenNumber);
-
-    const totalSupply = await nfPeabotContract.methods.totalSupply().call();
-    setTotalSupply(totalSupply);
-
-    // const nfPeabotPrice = await nfPeabotContract.methods.mintPrice().call();
-    // setNFPeabotPrice(nfPeabotPrice);
-   
-  }
-  
-  const handleShow = () => {
-    if (signedIn) {
-      setShow(true);
-    } else {
-      alert('please connnect your metamask');
+      setWalletConnectInfoModalShow(true);
     }
   }
 
-  const handleClose = () => setShow(false);
+  const handleMintModalClose = () => setMintModalShow(false);
+  const handleWallectConnectionModalClose = () => setWallectConnectionModalShow(false);
+  const handleWallectConnectInfoModalClose = () => setWalletConnectInfoModalShow(false);
+  const handleNetworkChangeModalClose = () => setNetworkChangeModalShow(false);
+  const handleMintErrorModalClose = () => setMintErrorModalShow(false);
+  const handleInstallMetamaskModalClose = () => setInstallMetamaskModalShow(false);
 
   const decreaseTokenNumber = () => {
     if (tokenNumber === 0) {
@@ -170,29 +237,16 @@ function App() {
   }
 
   const mint = async (numberofTokens) => {
-    if (nfPeabotContract) {
-      const nfPeabotPrice = await nfPeabotContract.methods.mintPrice().call();
-      const price = Number(nfPeabotPrice)  * numberofTokens
-      const gasAmount = await nfPeabotContract.methods.mint(numberofTokens).estimateGas({from: walletAddress, value: price})
-
-      const _totalSupply = await nfPeabotContract.methods.totalSupply().call()
-      nfPeabotContract.methods
-        .mint(numberofTokens)
-        .send({from: walletAddress, value: price, gas: String(gasAmount)})
-        .on('transactionHash', function(hash){
-          console.log("transactionHash", hash)
-        })
-        .on('receipt', function(receipt) {
-          console.log('receipt')
-        })
-        .on('confirmation', function(confirmationNumber, receipt){
-          console.log('confirmation')
-          setTotalSupply(parseInt(_totalSupply, 10) + numberofTokens)
-        })
-        .on('error', console.error)
-        setShow(false)
-    } else {
-        console.log("Wallet not connected")
+    if (active || error) {     
+      const mintPrice = await contract.mintPrice()
+      const price = Number(mintPrice) * numberofTokens;
+      await contract.mint(numberofTokens, {from: account, value: String(price)})
+                    .then((result) => {
+                      console.log('minting success');
+                    }).catch((err) => {
+                      setMintErrorModalShow(true);
+                    });
+      setMintModalShow(false);
     }
   };
 
@@ -246,9 +300,9 @@ function App() {
                     </NavItem>
                   </div>
                   <NavItem className="wallet-connect-btn">
-                    {!signedIn ? <Button size="sm" onClick={connectMetamask}>CONNECT WALLET</Button>
+                    {account ? <Button size="sm" onClick={disconnectWallet}>DISCONNECT WALLET</Button> 
                     :
-                    <Button size="sm" onClick={disconnectMetamask}>DISCONNECT WALLET</Button>}
+                    <Button size="sm" onClick={connectWallet}>CONNECT WALLET</Button>}
                   </NavItem>
                   {/* <NavItem className="wallet-connect-btn">
                     <Button size="sm">COMING SOON</Button>
@@ -259,7 +313,7 @@ function App() {
           </Container>
         </Navbar>
       </div>
-      {/* Banner */}
+      {/* Mint */}
       <div id="mint">
         <Container>
           <div className="banner d-flex justify-content-between">
@@ -269,7 +323,7 @@ function App() {
                 <p>A collection of 10,000 unique PeaBots, forever dreaming of living like humans.</p>
               </div>
               <div className="d-flex align-items-center">
-                <Button size="sm" onClick={handleShow}>MINT</Button>
+                <Button size="sm" onClick={handleMintModalShow}>MINT</Button>
                 {/* <Button size="sm">COMING SOON</Button> */}
               </div>
             </div>
@@ -587,8 +641,8 @@ function App() {
           </div>
         </Container>
       </div>
-      {/* Modal */}
-      <Modal show={show} onHide={handleClose}>
+      {/* Mint Modal */}
+      <Modal show={mintModdalShow} onHide={handleMintModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Mint a PeaBot</Modal.Title>
         </Modal.Header>
@@ -612,6 +666,94 @@ function App() {
             Mint
           </Button>
         </Modal.Footer>
+      </Modal>
+      {/* WalletConnection Modal */}
+      <Modal className="wallet-connection" show={walletConnectionModalShow} onHide={handleWallectConnectionModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>CONNECT TO A WALLET</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Button className="metamask-btn" variant="primary" onClick={() => {
+            setActivatingConnector(connectorsByName["Injected"]);
+            if (!window.ethereum) {
+              setInstallMetamaskModalShow(true);
+            } else if (window.ethereum && Number(window.ethereum.networkVersion) !== 4 ) {
+              setNetworkChangeModalShow(true);
+            } else {
+              activate(connectorsByName["Injected"]);
+            }
+            setWallectConnectionModalShow(false);
+          }}>
+            <img src="images/metamask-logo.svg" alt="" />
+            METAMASK
+          </Button>
+          <Button className="walletconnection-btn" variant="primary" onClick={() => {
+            resetWalletConnector(connectorsByName["WalletConnect"]);
+            setActivatingConnector(connectorsByName["WalletConnect"]);
+            activate(connectorsByName["WalletConnect"]);
+            setWallectConnectionModalShow(false);
+          }}>
+            <img src="images/walletconnect.svg" alt="" />
+            WALLET CONNECT
+          </Button>
+        </Modal.Body>
+      </Modal>
+      {/* WalletConnection Modal */}
+      <Modal className="info-modal" show={walletConnectInfoModalShow} onHide={handleWallectConnectInfoModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Information</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="text-center">Please connect your wallet by clicking 'CONNECT WALLET' button</p>
+        </Modal.Body>
+      </Modal>
+      {/* Mint Error Modal */}
+      <Modal className="info-modal" show={mintErrorModalShow} onHide={handleMintErrorModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Information</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="text-center">Error occurred during the minting. It's one of these reasons.</p>
+          <ul>
+            <li>
+              Sale is not started yet
+            </li>
+            <li>
+              Your balance is bellow PeaBots price
+            </li>
+            <li>
+              Your wallet account is not whitelist
+            </li>
+            <li>
+              Exceeds the number of NFTs that can mint
+            </li>
+          </ul>
+        </Modal.Body>
+      </Modal>
+       {/* Install Metamask Modal */}
+       <Modal className="info-modal" show={installMetamaskModalShow} onHide={handleInstallMetamaskModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Information</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="text-center">Please install metamask extension on your browser.</p>
+        </Modal.Body>
+      </Modal>
+      {/* WalletConnection Modal */}
+      <Modal className="network-change" show={networkChangeModalShow} onHide={handleNetworkChangeModalClose}>
+      <Modal.Header closeButton>
+          <Modal.Title>WRONG NETWORK</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="text-center">Please switch your wallet network to Mainnet to use the app</p>
+          <p className="text-center">If you still encounter problems, you may want to switch to a different wallet</p>
+          <Button className="walletconnection-btn text-center" variant="primary" onClick={() => {
+            setNetworkChangeModalShow(false);
+            setWallectConnectionModalShow(true);
+          }}>
+            Switch wallet
+          </Button>
+        </Modal.Body>
       </Modal>
     </div>
   );

@@ -7,7 +7,7 @@ export const INFURA_ADDRESS = "https://ropsten.infura.io/v3/e732c04a46bf48a68f44
 
 // The ADDRESS is the actual contract that is deployed on the network/testnet
 
-export const ADDRESS = "0xfb14f45AEF02B1BB8c2a90d646c114aB80BE0F3c"
+export const ADDRESS = "0xf0B9f9712cc3A741634244864D054F0De967a639"
 
 //The ABI is the ABI generated when the contract is deployed
 
@@ -202,6 +202,30 @@ export const ABI = [
     "inputs": [
       {
         "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "claimAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "addAddressToWinnerlist",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "success",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "to",
         "type": "address"
       },
@@ -292,6 +316,19 @@ export const ABI = [
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "_count",
+        "type": "uint256"
+      }
+    ],
+    "name": "freeMint",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
       }
@@ -344,6 +381,25 @@ export const ABI = [
       {
         "internalType": "bool",
         "name": "isWhiteListed",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      }
+    ],
+    "name": "isWinnerlisted",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "isWinnerListed",
         "type": "bool"
       }
     ],
@@ -836,6 +892,35 @@ export const ABI = [
       }
     ],
     "name": "whitelist",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "claimAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "hasMinted",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "winnerlist",
     "outputs": [
       {
         "internalType": "address",
